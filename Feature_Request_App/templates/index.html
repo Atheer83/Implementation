@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+    <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Client</th>
+              <th>Priority</th>
+              <th>Date</th>
+              <th>Product Area</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: FeaturesGrid.features">
+            <tr>
+              <td data-bind="text: data.title"></td>
+               <td data-bind="text: data.description"></td>
+               <td data-bind="text: data.client"></td>
+               <td data-bind="text: data.client_priority"></td>
+               <td data-bind="text: data.target_date"></td>
+               <td data-bind="text: data.product_area"></td>
+             </tr>
+          </tbody>
+        </table>
+      </div>
+
+</div>
+<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+    <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: FeaturesGrid.features">
+          </tbody>
+        </table>
+      </div>
+</div>
+
+{% endblock %}
