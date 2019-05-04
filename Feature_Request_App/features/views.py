@@ -1,4 +1,7 @@
-from flask import render_template as render, jsonify, Blueprint
+from flask import render_template as render, jsonify, Blueprint,request
+from Feature_Request_App import db
+from Feature_Request_App.models import FeatureRequest, feature_schema, features_schema
+import json
 
 
 features = Blueprint('feature_requests',__name__)
@@ -10,20 +13,28 @@ def home():
 
 
 #Get all features
-@features.route('/features')
-def get():
-    return jsonify([{
-            'title': 'Feature 1',
-            'description': 'add something to my software',
-            'client': 'ClientA',
-            'client_priority': 1,
-            'target_date': 'May 4, 2019',
-            'product_area': 'Reports',
-            },{
-            'title': 'Feature 2',
-            'description': 'add something to my software',
-            'client': 'ClientA',
-            'client_priority': 2,
-            'target_date': 'May 5, 2019',
-            'product_area': 'Reports',
-            }]), 200
+@features.route('/features',methods=['GET'])
+def get_features():
+     all_features = FeatureRequest.query.all()
+     result = features_schema.dump(all_features)
+     return jsonify(result.data)
+
+@features.route('/features',methods=['POST'])
+def add_feature():
+     # data = request.get_json()
+     title=request.json['title']
+     description=request.json['description']
+     client=request.json['client']
+     # target_date=request.json['target_date']
+     # client_priority=request.json['client_priority']
+     product_area=request.json['product_area']
+
+     feature_req = FeatureRequest(title, description, client, product_area)
+
+     db.session.add(feature_req)
+     db.session.commit()
+
+     print(feature_schema.jsonify(feature_req))
+     return feature_schema.jsonify(feature_req)
+    
+    
