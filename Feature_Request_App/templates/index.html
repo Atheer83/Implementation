@@ -23,16 +23,21 @@
                <!-- <td data-bind="text: data.client_priority"></td>
                <td data-bind="text: data.target_date"></td> -->
                <td data-bind="text: data.product_area"></td>
-               <!-- <td><a href data-bind="click: "</td> -->
+               <td><a href data-bind="click: FeaturesGrid.editFeature">Edit</a>
+                 | <a href data-bind="click: FeaturesGrid.deleteFeature">Delete</a></td>
              </tr>
              <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
-               <td><input type="text" class="form-control" data-bind="value: data.title" /></td>
+                <td><input type="text" class="form-control" data-bind="value: data.title" /></td>
                <td><input type="text" class="form-control" data-bind="value: data.description" /></td>
                <td><input type="text" class="form-control" data-bind="value: data.client" /></td>
                <!-- <td><input type="text" class="form-control" data-bind="value: data.client_priority" /></td>
                <td><input type="text" class="form-control" data-bind="value: data.target_date" /></td> -->
                <td><input type="text" class="form-control" data-bind="value: data.product_area" /></td>
-               <td><a href data-bind="click: FeaturesGrid.saveFeature">Save</a></td>
+                <td>
+                  <a href data-bind="visible: true, click: FeaturesGrid.updateFeature">Update</a>
+                  <a href data-bind="visible: true, click: FeaturesGrid.saveFeature">Save</a>
+                </td>
+               
              </tr>
           </tbody>
         </table>
