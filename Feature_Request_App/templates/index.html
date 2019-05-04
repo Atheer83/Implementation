@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+<a href data-bind="click: FeaturesGrid.addFeature">+ Add a Feature</a>
 <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
     <div class="card-body">
         <table class="table">
@@ -8,19 +9,30 @@
               <th>Title</th>
               <th>Description</th>
               <th>Client</th>
-              <th>Priority</th>
-              <th>Date</th>
+              <!-- <th>Priority</th>
+              <th>Date</th> -->
               <th>Product Area</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody data-bind="foreach: FeaturesGrid.features">
-            <tr>
+            <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
               <td data-bind="text: data.title"></td>
                <td data-bind="text: data.description"></td>
                <td data-bind="text: data.client"></td>
-               <td data-bind="text: data.client_priority"></td>
-               <td data-bind="text: data.target_date"></td>
+               <!-- <td data-bind="text: data.client_priority"></td>
+               <td data-bind="text: data.target_date"></td> -->
                <td data-bind="text: data.product_area"></td>
+               <!-- <td><a href data-bind="click: "</td> -->
+             </tr>
+             <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
+               <td><input type="text" class="form-control" data-bind="value: data.title" /></td>
+               <td><input type="text" class="form-control" data-bind="value: data.description" /></td>
+               <td><input type="text" class="form-control" data-bind="value: data.client" /></td>
+               <!-- <td><input type="text" class="form-control" data-bind="value: data.client_priority" /></td>
+               <td><input type="text" class="form-control" data-bind="value: data.target_date" /></td> -->
+               <td><input type="text" class="form-control" data-bind="value: data.product_area" /></td>
+               <td><a href data-bind="click: FeaturesGrid.saveFeature">Save</a></td>
              </tr>
           </tbody>
         </table>
