@@ -1,5 +1,22 @@
 var FeaturesClient = function () {
 
+    // Add feature
+    var addFeature = function (feature, callback) {
+        var plainFeature = ko.toJS (feature.data);
+        console.log("Saving feature [" + JSON.stringify(plainFeature) + "] ");
+        $.ajax({
+            url: "/features",
+            type: "POST",
+            data: JSON.stringify(plainFeature),
+            contentType: "application/json",
+            success: function(result) {
+                console.log(JSON.stringify(result))
+                callback (feature, result);
+            }
+        });
+    };
+
+    // Get All features
     var getFeatures = function (callback) {
         $.ajax({
             url: "/features",
@@ -11,6 +28,8 @@ var FeaturesClient = function () {
         });
     };
     return {
-        getFeatures: getFeatures
+        addFeature: addFeature,
+        getFeatures: getFeatures,
+
     };
 }();
