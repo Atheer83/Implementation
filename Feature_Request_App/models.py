@@ -24,7 +24,7 @@ class FeatureRequest(db.Model):
 
 class FeatureRequestSchema(ma.Schema):
     class Meta:
-        fields = ('title','description','client','product_area')
+        fields = ('id','title','description','client','product_area')
 
 feature_schema = FeatureRequestSchema(strict=True)
 features_schema = FeatureRequestSchema(many=True,strict=True)
