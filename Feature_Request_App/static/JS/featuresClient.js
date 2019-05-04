@@ -16,6 +16,34 @@ var FeaturesClient = function () {
         });
     };
 
+    // Update feature
+    var updateFeature = function (feature, callback) {
+        var plainFeature = ko.toJS (feature.data);
+        console.log("Updating feature [" + JSON.stringify(plainFeature) + "] ");
+        $.ajax({
+            url: "/features/" + feature.data.id(),
+            type: "PUT",
+            data: JSON.stringify(plainFeature),
+            contentType: "application/json",
+            success: function(result) {
+                callback (feature);
+            }
+        });
+    };
+
+    // Delete feature
+    var deleteFeature = function (feature, callback) {
+        console.log("Deleting feature with id [" + feature.data.id() + "] ");
+        $.ajax({
+            url: "/features/" + feature.data.id(),
+            type: "DELETE",
+            contentType: "application/json",
+            success: function(result) {
+                callback (feature);
+            }
+        });
+    };
+
     // Get All features
     var getFeatures = function (callback) {
         $.ajax({
@@ -30,6 +58,7 @@ var FeaturesClient = function () {
     return {
         addFeature: addFeature,
         getFeatures: getFeatures,
-
+        deleteFeature: deleteFeature,
+        updateFeature: updateFeature,
     };
 }();

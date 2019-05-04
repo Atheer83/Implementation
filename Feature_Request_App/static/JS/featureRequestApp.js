@@ -1,8 +1,8 @@
 var FeaturesGrid = function () {
-
     // model for feature
     featureModel = function (item, itemMode) {
         this.data = {};
+        this.data.id = ko.observable(item.id);
         this.data.title = ko.observable(item.title);
         this.data.description = ko.observable(item.description);
         this.data.client = ko.observable(item.client);
@@ -42,6 +42,29 @@ var FeaturesGrid = function () {
         feature.displayMode ();
     };
 
+    // delete rquest to the client
+    var deleteFeature = function (feature) {
+        FeaturesClient.deleteFeature(feature, deleteFeatureCallback);
+    }
+
+    var deleteFeatureCallback = function (feature) {
+        features.remove(feature);
+    };
+
+    // edit a feature
+    var editFeature = function (feature) {
+        feature.displayMode(displayMode.edit)
+    }
+
+    // update rquest to the client
+    var updateFeature = function (feature) {
+        FeaturesClient.updateFeature(feature, updateFeatureCallback);
+    }
+
+    var updateFeatureCallback = function (feature) {
+        feature.displayMode(displayMode.view)
+    }
+
     var fetchFeatures = function () {
         FeaturesClient.getFeatures(fetchFeaturesCallback)
     }
@@ -63,7 +86,10 @@ var FeaturesGrid = function () {
         features,
         displayMode,
         addFeature,
-        saveFeature
+        saveFeature,
+        deleteFeature,
+        editFeature,
+        updateFeature,
 
     };
 }();
