@@ -38,17 +38,17 @@ def add_feature():
 
 # Delete a Feature
 @features.route('/features/<id>', methods=['DELETE'])
-def delete_feture(id):
-     feture = FeatureRequest.query.get(id)
-     db.session.delete(feture)
+def delete_feature(id):
+     feature = FeatureRequest.query.get(id)
+     db.session.delete(feature)
      db.session.commit()
 
-     return feture_schema.jsonify(feture)
+     return feature_schema.jsonify(feature)
 
 # Update a Feature
 @features.route('/features/<id>', methods=['PUT'])
-def update_feture(id):
-  feture = FeatureRequest.query.get(id)
+def update_feature(id):
+  feature = FeatureRequest.query.get(id)
 
   title = request.json['title']
   description=request.json['description']
@@ -57,17 +57,17 @@ def update_feture(id):
   # client_priority=request.json['client_priority']
   product_area=request.json['product_area']
 
-  feture.title = title
-  feture.description = description
-  feture.client = client
+  feature.title = title
+  feature.description = description
+  feature.client = client
 #   feture.target_date = target_date
 #   feture.client_priority = client_priority
-  feture.product_area = product_area
+  feature.product_area = product_area
 
 
   db.session.commit()
 
-  return feture_schema.jsonify(feture)
+  return feature_schema.jsonify(feature)
 
      
     
