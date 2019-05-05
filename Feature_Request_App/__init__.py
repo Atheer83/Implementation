@@ -17,5 +17,8 @@ ma = Marshmallow(app)
 Migrate(app,db)
 
 from Feature_Request_App.features.views import features
+from Feature_Request_App.clients.views import clients
+
 
 app.register_blueprint(features)
+app.register_blueprint(clients)
