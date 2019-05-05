@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<a href data-bind="click: FeaturesGrid.addFeature">+ Add a Feature</a>
-<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-    <div class="card-body">
+
+  <a href data-bind="click: FeaturesGrid.addFeature">+ Add a Feature</a>
+  <div class="card-body">
         <table class="table">
           <thead>
             <tr>
@@ -43,20 +43,33 @@
         </table>
       </div>
 
-</div>
-<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-    <div class="card-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody data-bind="foreach: FeaturesGrid.features">
-          </tbody>
-        </table>
+
+  <a href data-bind="click: FeaturesGrid.addClient">+ Add a Client</a>
+  
+  <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: FeaturesGrid.clients">
+          <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
+            <td data-bind="text: data.name"></td>
+             <td><a href data-bind="click: FeaturesGrid.editClient">Edit</a>
+               | <a href data-bind="click: FeaturesGrid.deleteClient">Delete</a></td>
+           </tr>
+           <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
+              <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
+              <td>
+                <a href data-bind="visible: true, click: FeaturesGrid.updateClient">Update</a>
+                <a href data-bind="visible: true, click: FeaturesGrid.saveClient">Save</a>
+              </td>
+             
+           </tr>
+        </tbody>
+      </table>
       </div>
-</div>
 
 {% endblock %}
