@@ -11,7 +11,7 @@ var FeaturesClient = function () {
             contentType: "application/json",
             success: function(result) {
                 console.log(JSON.stringify(result))
-                callback (feature, result);
+                callback (feature);
             }
         });
     };
@@ -33,12 +33,11 @@ var FeaturesClient = function () {
 
     // Delete feature
     var deleteFeature = function (feature, callback) {
-        console.log("Deleting feature with id [" + feature.data.id() + "] ");
         $.ajax({
             url: "/features/" + feature.data.id(),
             type: "DELETE",
-            contentType: "application/json",
             success: function(result) {
+                console.log(result)
                 callback (feature);
             }
         });
