@@ -2,6 +2,25 @@ from Feature_Request_App import db
 from Feature_Request_App import ma
 from datetime import datetime
 
+
+class Clients(db.Model):
+
+    __tablename__ = 'clients'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+   
+    def __init__(self,name):
+        self.name = name
+
+class ClientsSchema(ma.Schema):
+    class Meta:
+        fields = ('id','name')
+
+client_schema = ClientsSchema(strict=True)
+clients_schema = ClientsSchema(many=True,strict=True)
+
+
 class FeatureRequest(db.Model):
 
     __tablename__ = 'features'
@@ -30,13 +49,6 @@ feature_schema = FeatureRequestSchema(strict=True)
 features_schema = FeatureRequestSchema(many=True,strict=True)
 
 
-    # def features2dict(self, features):
-    #     return {
-    #         'title': features.title,
-    #         'description': features.description,
-    #         'client': features.client,
-    #         'product_area': features.product_area,
-    #     }
 
 db.drop_all()
 db.create_all()
