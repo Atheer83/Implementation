@@ -18,6 +18,18 @@ var FeaturesGrid = function () {
         this.displayMode = ko.observable(itemMode);
     } 
 
+    // model for adding client
+    var addClientModel = function () {
+        this.id = ko.observable(item.id);
+        this.clientName = ko.observable(item.name);
+    } 
+
+    // model for adding product area
+    var addProductModel = function () {
+        this.id = ko.observable(item.id);
+        this.productName = ko.observable(item.name);
+    } 
+
     // model for feature
     featureModel = function (item, itemMode) {
         this.data = {};
@@ -94,23 +106,14 @@ var FeaturesGrid = function () {
 
     // add a blank client to the clients array
     var addClient = function (){
-        var item = {
-            name: null,
-            };
-            clients.push(new clientModel(item, displayMode.edit));
     };
 
      // add a blank product to the products array
      var addProduct = function (){
-        var item = {
-            name: null,
-            };
-            products.push(new productModel(item, displayMode.edit));
     };
 
     // add rquest to the feature service
-    var saveFeature = function (feature) {
-        console.log(addFeatureModel)
+    var saveFeature = function () {
         var feature = {
             'title':addFeatureModel.title,
             'description':addFeatureModel.description,
@@ -123,12 +126,19 @@ var FeaturesGrid = function () {
     }
 
     // add rquest to the client service
-    var saveClient = function (client) {
+    var saveClient = function () {
+        var client = {
+            'name':addClientModel.clientName,
+        }
+        console.log(client)
         ClientService.addClient(client, saveClientCallback);
     }
 
     // add rquest to the product service
     var saveProduct = function (product) {
+        var product = {
+            'name':addProductModel.productName,
+        }
         ProductService.addProduct(product, saveProductCallback);
     }
 
@@ -224,13 +234,13 @@ var FeaturesGrid = function () {
     // callback function for updating client
     var updateClientCallback = function (client) {
         client.displayMode(displayMode.view)
-
+        fetchClients()
     }
 
      // callback function for updating product
      var updateProductCallback = function (product) {
         product.displayMode(displayMode.view)
-
+        fetchProducts()
     }
 
     // get all features
@@ -334,7 +344,9 @@ var FeaturesGrid = function () {
         enableFeaturesTable,
         enableClientsTable,
         enableProductsTable,
-        addFeatureModel
+        addFeatureModel,
+        addClientModel,
+        addProductModel
 
     };
 }();

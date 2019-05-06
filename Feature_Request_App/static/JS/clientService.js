@@ -2,7 +2,7 @@ var ClientService = function () {
 
     // Add Client
     var addClient = function (client, callback) {
-        var plainClient = ko.toJS (client.data);
+        var plainClient = ko.toJS (client);
         console.log("Saving Client [" + JSON.stringify(plainClient) + "] ");
         $.ajax({
             url: "/clients",

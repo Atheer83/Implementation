@@ -2,7 +2,7 @@ var ProductService = function () {
 
     // Add Product
     var addProduct = function (product, callback) {
-        var plainProduct = ko.toJS (product.data);
+        var plainProduct = ko.toJS (product);
         console.log("Saving Product [" + JSON.stringify(plainProduct) + "] ");
         $.ajax({
             url: "/products",
