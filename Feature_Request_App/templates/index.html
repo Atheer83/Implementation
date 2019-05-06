@@ -1,110 +1,175 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <a href data-bind="click: FeaturesGrid.addFeature">+ Add Feature</a>
+<div data-bind="visible: FeaturesGrid.enableFeaturesTable" class="card">
+  <h5 class="card-header">Features</h5>
   <div class="card-body">
+    <!-- Button trigger modal -->
+<button data-bind="click: FeaturesGrid.addFeature" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Add Feature
+</button>
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th width='6%'>Priority</th>
+          <th width='9%'>Client</th>
+          <th width='9%'>Title</th>
+          <th width='50%'>Description</th>
+          <th width='9%'>Product Area</th>
+          <th width='9%'>Date</th>
+          <th width='8%'>Actions</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: FeaturesGrid.features">
+        <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
+          <td data-bind="text: data.client_priority"></td>
+          <td data-bind="text: data.client_id"></td>
+          <td data-bind="text: data.title"></td>
+          <td data-bind="text: data.description"></td>
+          <td data-bind="text: data.product_area_id"></td>
+          <td data-bind="text: data.target_date"></td>
+          <td><a href data-bind="click: FeaturesGrid.editFeature"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
+            <a href data-bind="click: FeaturesGrid.deleteFeature"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
+        </tr>
+        <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
+          <td><input type="number" class="form-control" data-bind="value: data.client_priority" required/></td>
+          <td><select data-bind="options: FeaturesGrid.clientsList,
+                optionsText: 'name', optionsValue: 'id', optionsCaption: 'Choose Client', value: data.client_id" required></select></td>
+          <td><input type="text" class="form-control" data-bind="value: data.title" required/></td>
+          <td><input type="text" class="form-control" data-bind="value: data.description" required/></td>
+          <td><select data-bind="options: FeaturesGrid.productsList,
+              optionsText: 'name', optionsValue: 'id', optionsCaption: 'Choose Product', value: data.product_area_id" required></select></td>
+          <td><input type="date" class="form-control" data-bind="value: data.target_date" required/></td>
+          <td>
+              <a href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+          </td>
+            
+        </tr>
+      </tbody>
+            </table>
+          </div>
+    </div>
+</div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="needs-validation" data-bind="submit: FeaturesGrid.saveFeature">
+            <div class="form-group">
+              <label >Title</label>
+              <input type="text" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.title" required>
+            </div>
+            <div class="form-group">
+              <label >Description</label>
+              <textarea type="text" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label >Client</label>
+              <select data-bind="options: FeaturesGrid.clientsList, optionsText: 'name', optionsValue: 'id',
+                                optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id" required>
+              </select>
+            </div>
+            <div class="form-group">
+              <label >Product Area</label>
+              <select data-bind="options: FeaturesGrid.productsList,
+                optionsText: 'name',
+                optionsValue: 'id',
+                optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id" required>
+              </select>
+            </div>
+            <div class="form-group">
+              <label >Priority</label>
+              <input type="number" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.client_priority" required>
+            </div>
+            <div class="form-group">
+              <label >Target Date</label>
+              <input type="date" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.target_date" required>
+            </div>
+                   
+                <button class="btn btn-primary" type="submit">Save</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div data-bind="visible: FeaturesGrid.enableClientsTable" class="card">
+    <h5 class="card-header">Clients</h5>
+    
+    <div class="card-body">
+      <a href data-bind="click: FeaturesGrid.addClient">+ Add Client</a>
+      <div class="card-body">
         <table class="table">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Client</th>
-              <th>Product Area</th>
-              <th>Date</th>
-              <th>Priority</th>
+              <th>Name</th>
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody data-bind="foreach: FeaturesGrid.features">
+          <tbody data-bind="foreach: FeaturesGrid.clients">
             <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
-              <td data-bind="text: data.title"></td>
-               <td data-bind="text: data.description"></td>
-               <td data-bind="text: data.client"></td>
-               <td data-bind="text: data.client_priority"></td>
-               <td data-bind="text: data.target_date"></td>
-               <td data-bind="text: data.product_area"></td>
-               <td><a href data-bind="click: FeaturesGrid.editFeature">Edit</a>
-                 | <a href data-bind="click: FeaturesGrid.deleteFeature">Delete</a></td>
+              <td data-bind="text: data.name"></td>
+               <td><a href data-bind="click: FeaturesGrid.editClient">Edit</a>
+                 | <a href data-bind="click: FeaturesGrid.deleteClient">Delete</a></td>
              </tr>
              <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
-                <td><input type="text" class="form-control" data-bind="value: data.title" /></td>
-               <td><input type="text" class="form-control" data-bind="value: data.description" /></td>
-               <td><select data-bind="options: FeaturesGrid.clientsList,
-                optionsText: 'name',
-                optionsValue: 'name',
-                optionsCaption: 'Choose Client', value: data.client"></select></td>
-                <td><select data-bind="options: FeaturesGrid.productsList,
-                  optionsText: 'name',
-                  optionsValue: 'name',
-                  optionsCaption: 'Choose Product', value: data.product_area"></select></td>
-               <td><input type="number" class="form-control" data-bind="value: data.client_priority" /></td>
-               <td><input type="date" class="form-control" data-bind="value: data.target_date" /></td>
-              
+                <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
                 <td>
-                  <a href data-bind="visible: true, click: FeaturesGrid.updateFeature">Update</a>
-                  <a href data-bind="visible: true, click: FeaturesGrid.saveFeature">Save</a>
+                  <a href data-bind="visible: true, click: FeaturesGrid.updateClient">Update</a>
+                  <a href data-bind="visible: true, click: FeaturesGrid.saveClient">Save</a>
                 </td>
                
              </tr>
           </tbody>
         </table>
-      </div>
+        </div>
 
+   </div>
+  </div>
 
-  <a href data-bind="click: FeaturesGrid.addClient">+ Add Client</a>
-  
-  <div class="card-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody data-bind="foreach: FeaturesGrid.clients">
-          <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
-            <td data-bind="text: data.name"></td>
-             <td><a href data-bind="click: FeaturesGrid.editClient">Edit</a>
-               | <a href data-bind="click: FeaturesGrid.deleteClient">Delete</a></td>
-           </tr>
-           <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
-              <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
-              <td>
-                <a href data-bind="visible: true, click: FeaturesGrid.updateClient">Update</a>
-                <a href data-bind="visible: true, click: FeaturesGrid.saveClient">Save</a>
-              </td>
-             
-           </tr>
-        </tbody>
-      </table>
-      </div>
+  <div data-bind="visible: FeaturesGrid.enableProductsTable" class="card">
+      <h5 class="card-header">Products</h5>
+      <div class="card-body">
 
       <a href data-bind="click: FeaturesGrid.addProduct">+ Add Product Area</a>
-  
-  <div class="card-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody data-bind="foreach: FeaturesGrid.products">
-          <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
-            <td data-bind="text: data.name"></td>
-             <td><a href data-bind="click: FeaturesGrid.editProduct">Edit</a>
-               | <a href data-bind="click: FeaturesGrid.deleteProduct">Delete</a></td>
-           </tr>
-           <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
-              <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
-              <td>
-                <a href data-bind="visible: true, click: FeaturesGrid.updateProduct">Update</a>
-                <a href data-bind="visible: true, click: FeaturesGrid.saveProduct">Save</a>
-              </td>
-             
-           </tr>
-        </tbody>
-      </table>
-      </div>
+
+      <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: FeaturesGrid.products">
+              <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
+                <td data-bind="text: data.name"></td>
+                 <td><a href data-bind="click: FeaturesGrid.editProduct">Edit</a>
+                   | <a href data-bind="click: FeaturesGrid.deleteProduct">Delete</a></td>
+               </tr>
+               <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
+                  <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
+                  <td>
+                    <a href data-bind="visible: true, click: FeaturesGrid.updateProduct">Update</a>
+                    <a href data-bind="visible: true, click: FeaturesGrid.saveProduct">Save</a>
+                  </td>
+                 
+               </tr>
+            </tbody>
+          </table>
+          </div>
+</div>
+     </div>
+
 
 {% endblock %}

@@ -2,7 +2,7 @@ var FeaturesClient = function () {
 
     // Add feature
     var addFeature = function (feature, callback) {
-        var plainFeature = ko.toJS (feature.data);
+        var plainFeature = ko.toJS (feature);
         console.log("Saving feature [" + JSON.stringify(plainFeature) + "] ");
         $.ajax({
             url: "/features",
@@ -11,7 +11,7 @@ var FeaturesClient = function () {
             contentType: "application/json",
             success: function(result) {
                 console.log(JSON.stringify(result))
-                callback (feature);
+                callback ();
             }
         });
     };
