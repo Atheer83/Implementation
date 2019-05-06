@@ -1,6 +1,6 @@
 from flask import render_template as render, jsonify, Blueprint,request
 from Feature_Request_App import db
-from Feature_Request_App.models import FeatureRequest, feature_schema, features_schema
+from Feature_Request_App.models import FeatureRequest, feature_schema, features_schema, Clients, clients_schema, Products,products_schema
 from datetime import datetime
 import json
 
@@ -17,21 +17,32 @@ def home():
 @features.route('/features',methods=['GET'])
 def get_features():
      all_features = FeatureRequest.query.all()
-     result = features_schema.dump(all_features)
-     return jsonify(result.data)
+     all_clients = Clients.query.all()
+     all_products = Products.query.all()
+     features_result = features_schema.dump(all_features)
+     clients_result = clients_schema.dump(all_clients)
+     products_result = products_schema.dump(all_products)
+     for i in range(len(features_result.data)):
+          client_id = features_result.data[i]['client_id']
+          product_id = features_result.data[i]['product_area_id']
+          client_name = clients_result.data[client_id - 1]['name']
+          product_name = products_result.data[product_id - 1]['name']
+          features_result.data[i]['client_id'] = client_name
+          features_result.data[i]['product_area_id'] = product_name          
+     return jsonify(features_result.data)
 
 @features.route('/features',methods=['POST'])
 def add_feature():
      # data = request.get_json()
      title=request.json['title']
      description=request.json['description']
-     client=request.json['client']
      target=request.json['target_date']
      target_date=datetime.strptime(target, '%Y-%m-%d')
      client_priority=request.json['client_priority']
-     product_area=request.json['product_area']
+     client_id=request.json['client_id']
+     product_area_id=request.json['product_area_id']
 
-     feature_req = FeatureRequest(title, description, client, target_date, client_priority, product_area)
+     feature_req = FeatureRequest(title, description,target_date, client_priority,client_id, product_area_id)
 
      db.session.add(feature_req)
      db.session.commit()
@@ -54,17 +65,18 @@ def update_feature(id):
 
   title = request.json['title']
   description=request.json['description']
-  client=request.json['client']
-  target_date=request.json['target_date']
+  target=request.json['target_date']
+  target_date=datetime.strptime(target, '%Y-%m-%d')
   client_priority=request.json['client_priority']
-  product_area=request.json['product_area']
+  client_id=request.json['client_id']
+  product_area_id=request.json['product_area_id']
 
   feature.title = title
   feature.description = description
-  feature.client = client
-  feture.target_date = target_date
-  feture.client_priority = client_priority
-  feature.product_area = product_area
+  feature.target_date = target_date
+  feature.client_priority = client_priority
+  feature.client_id = client_id
+  feature.product_area_id = product_area_id
 
 
   db.session.commit()
