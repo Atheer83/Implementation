@@ -54,10 +54,24 @@ var ProductService = function () {
             }
         });
     };
+
+     // Get  Product area features
+     var getProductFeatures = function (productId, callback) {
+        $.ajax({
+            url: "/productFeatures/" + productId,
+            type: "GET",
+            success: function (result) {
+                console.log("product features", JSON.stringify(result));
+                callback (result);
+            }
+        });
+    };
+
     return {
-        addProduct: addProduct,
-        getProducts: getProducts,
-        deleteProduct: deleteProduct,
-        updateProduct: updateProduct,
+        addProduct,
+        getProducts,
+        deleteProduct,
+        updateProduct,
+        getProductFeatures,
     };
 }();
