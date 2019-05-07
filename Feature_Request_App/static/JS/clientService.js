@@ -49,7 +49,7 @@ var ClientService = function () {
             url: "/clients",
             type: "GET",
             success: function (result) {
-                console.log("Clients", JSON.stringify(result));
+                // console.log("Clients", JSON.stringify(result));
                 callback (result);
             }
         });
@@ -57,22 +57,37 @@ var ClientService = function () {
 
     // Get  Client features
     var getClientFeatures = function (clientId, callback) {
-        console.log(clientId)
         $.ajax({
-            url: "/clients/" + clientId,
+            url: "/clientFeatures/" + clientId,
             type: "GET",
             success: function (result) {
-                console.log("Clients", JSON.stringify(result));
+                console.log("client features", JSON.stringify(result));
                 callback (result);
             }
         });
     };
 
+    // Get  Client and product area features
+    var getClientProductFeatures = function (clientId, productId, callback) {
+        $.ajax({
+            url: "/clientProductFeatures/" + clientId +'/' + productId,
+            type: "GET",
+            success: function (result) {
+                console.log("client product area features", JSON.stringify(result));
+                callback (result);
+            }
+        });
+    };
+
+
+    
+
     return {
-        addClient: addClient,
-        getClients: getClients,
-        deleteClient: deleteClient,
-        updateClient: updateClient,
-        getClientFeatures
+        addClient,
+        getClients,
+        deleteClient,
+        updateClient,
+        getClientFeatures,
+        getClientProductFeatures
     };
 }();
