@@ -66,8 +66,16 @@ var FeaturesGrid = function () {
     }
 
     // list of features
-    var features = ko.observableArray();
+    var features = ko.observableArray()
 
+    var sortBy = function() {
+        console.log("hiiiiiiii")
+        features.sort(function(left, right){
+            console.log(left.data.client_priority())
+            return left.data.client_priority() == right.data.client_priority() ? 
+            0 : left.data.client_priority() < right.data.client_priority() ? -1 : 1
+        });
+    }
     // list of clients
     var clients = ko.observableArray();
 
@@ -148,7 +156,8 @@ var FeaturesGrid = function () {
         // feature.displayMode (displayMode.view);
         addFeatureModel.client_id = undefined;
         addFeatureModel.product_area_id = undefined;
-        fetchFeatures()   
+        fetchFeatures()  
+        sortBy() 
     };
 
     // callback function for saving client
@@ -232,6 +241,7 @@ var FeaturesGrid = function () {
     var updateFeatureCallback = function (feature) {
         feature.displayMode(displayMode.view)
         fetchFeatures()
+        sortBy() 
     }
 
     // callback function for updating client
@@ -270,6 +280,7 @@ var FeaturesGrid = function () {
             item.target_date = newDate;
             features.push(new featureModel(item, displayMode.view));
         });
+        sortBy();
     };
 
     // callback function for fetching clients
@@ -322,6 +333,7 @@ var FeaturesGrid = function () {
             ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
         } else {
             fetchFeatures(); 
+            sortBy() 
         }
     }
 
@@ -337,6 +349,7 @@ var FeaturesGrid = function () {
             ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
         } else {
             fetchFeatures(); 
+            sortBy() 
         }
     }
 
@@ -348,6 +361,7 @@ var FeaturesGrid = function () {
             item.target_date = newDate;
             features.push(new featureModel(item, displayMode.view));
         });
+        sortBy() 
     }
 
     var filtterFeaturesByProductCallback = function(data) {
@@ -358,6 +372,7 @@ var FeaturesGrid = function () {
             item.target_date = newDate;
             features.push(new featureModel(item, displayMode.view));
         });
+        sortBy() 
     }
 
     var filtterFeaturesByClientProductCallback = function(data) {
@@ -368,6 +383,7 @@ var FeaturesGrid = function () {
             item.target_date = newDate;
             features.push(new featureModel(item, displayMode.view));
         });
+        sortBy() 
     }
 
     var init = function () {
