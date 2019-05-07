@@ -54,10 +54,25 @@ var ClientService = function () {
             }
         });
     };
+
+    // Get  Client features
+    var getClientFeatures = function (clientId, callback) {
+        console.log(clientId)
+        $.ajax({
+            url: "/clients/" + clientId,
+            type: "GET",
+            success: function (result) {
+                console.log("Clients", JSON.stringify(result));
+                callback (result);
+            }
+        });
+    };
+
     return {
         addClient: addClient,
         getClients: getClients,
         deleteClient: deleteClient,
         updateClient: updateClient,
+        getClientFeatures
     };
 }();

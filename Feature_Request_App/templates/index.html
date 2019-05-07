@@ -2,12 +2,11 @@
 {% block content %}
 
 <div data-bind="visible: FeaturesGrid.enableFeaturesTable" class="card">
-  <h5 class="card-header">Features</h5>
+   <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addFeature"  data-toggle="modal" data-target="#featureModal">
+      <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
+   </a></span>Features</h5>
   <div class="card-body">
     <!-- Button trigger modal -->
-<button data-bind="click: FeaturesGrid.addFeature" type="button" class="btn btn-primary" data-toggle="modal" data-target="#featureModal">
-    Add Feature
-</button>
   <div class="card-body">
     <table class="table table-hover">
       <thead>
@@ -102,13 +101,10 @@
   </div>
 
 <div data-bind="visible: FeaturesGrid.enableClientsTable" class="card">
-    <h5 class="card-header">Clients</h5>
-    
+    <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addClient"  data-toggle="modal" data-target="#clientModal">
+        <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
+     </a></span>Clients</h5>    
     <div class="card-body">
-      <!-- Button trigger modal -->
-<button data-bind="click: FeaturesGrid.addClient" type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal">
-    Add Client
-</button>
       <div class="card-body">
         <table class="table table-hover">
           <thead>
@@ -158,13 +154,10 @@
     </div>
 
   <div data-bind="visible: FeaturesGrid.enableProductsTable" class="card">
-      <h5 class="card-header">Products</h5>
+      <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addProduct"  data-toggle="modal" data-target="#productModal">
+          <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
+       </a></span>Products</h5>   
       <div class="card-body">
-
-      <!-- Button trigger modal -->
-<button data-bind="click: FeaturesGrid.addProduct" type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal">
-    Add Product
-</button>
 
       <div class="card-body">
           <table class="table table-hover">

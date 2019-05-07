@@ -15,12 +15,10 @@ class Clients(db.Model):
     def __init__(self,name):
         self.name = name
 
-    def __repr__(self):
-        return '%s' % self.name
 
 class ClientsSchema(ma.Schema):
     class Meta:
-        fields = ('id','name')
+        fields = ('id','name','features')
 
 client_schema = ClientsSchema(strict=True)
 clients_schema = ClientsSchema(many=True,strict=True)
@@ -39,7 +37,7 @@ class Products(db.Model):
 
 class ProductsSchema(ma.Schema):
     class Meta:
-        fields = ('id','name')
+        fields = ('id','name','features')
 
 product_schema = ProductsSchema(strict=True)
 products_schema = ProductsSchema(many=True,strict=True)

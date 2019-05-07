@@ -1,9 +1,16 @@
 body {
-        margin-top: 3rem;
+        margin-top: 2rem;
   }
 
 .highLightButton {
     color: #fff;
 background-color: #007bff;
 border-color: #007bff;
+}
+
+#sideNav {
+  margin-top: 5rem;
+}
+.addButtons{
+  float: right;
 }

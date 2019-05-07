@@ -11,7 +11,7 @@
       <div class="container-fluid">
       <div class="row">
           <div class="col-2">
-            <div class="card bg-light mb-3" style="max-width: 18rem;">
+            <div id="sideNav" class="card bg-light mb-3" style="max-width: 18rem;">
               <div class="card-header">Sections</div>
               <div class="card-body">
                 <button data-bind="click: FeaturesGrid.showFeaturesTable, css: { highLightButton: FeaturesGrid.enableFeaturesTable }" type="button" class="btn btn-outline-primary btn-lg btn-block"  >Features</button><br>
@@ -21,7 +21,36 @@
             </div>
           </div>
           <div class="col-10">
-               
+              <div class="row">
+                  <div class="col-2">
+                    <div>
+                      <label class="label">Select Client</label>
+                    </div>
+                    <div>
+                      <select data-bind="options: FeaturesGrid.clientsList, optionsText: 'name', optionsValue: 'id',
+                                        optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id, click: FeaturesGrid.filtterFeatures">
+                      </select>
+                    </div>
+                      
+                  </div>
+                  <div class="col-2">
+                    <div>
+                        <label class="label">Select Product Area</label>
+                    </div>
+                    <div>
+                      <select data-bind="options: FeaturesGrid.productsList,
+                        optionsText: 'name',
+                        optionsValue: 'id',
+                        optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id">
+                      </select>
+                    </div>
+                          
+                  </div>
+              </div>
+              <div class="form-group">
+                  
+                 
+                </div>
                     {% block content %}
           
                     {% endblock %}

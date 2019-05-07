@@ -90,6 +90,7 @@ var FeaturesGrid = function () {
             clientsObj['id'] = listOfClients[i].data.id();
             clientsList.push(clientsObj)
             }
+            console.log(clientsList())
         };
 
     var getAllProducts = function () {
@@ -275,6 +276,7 @@ var FeaturesGrid = function () {
         data.forEach(function(item) {
             clients.push(new clientModel(item, displayMode.view));
         });
+        getAllClients()
     };
 
     // callback function for fetching products
@@ -283,6 +285,7 @@ var FeaturesGrid = function () {
         data.forEach(function(item) {
             products.push(new productModel(item, displayMode.view));
         });
+        getAllProducts();
     };
 
     var showFeaturesTable = function(e) {
@@ -305,12 +308,20 @@ var FeaturesGrid = function () {
     var enableClientsTable = ko.observable(false)
     var enableProductsTable = ko.observable(false)
 
+    var filtterFeatures = function(e){
+        var id = e.addFeatureModel.client_id;
+        ClientService.getClientFeatures(id, filtterFeaturesCallback)
+    }
 
+    var filtterFeaturesCallback = function(data) {
+        console.log(data)
+    }
 
     var init = function () {
         fetchFeatures();
         fetchClients();
         fetchProducts();
+        
         ko.applyBindings(FeaturesGrid); 
     };
 
@@ -346,7 +357,8 @@ var FeaturesGrid = function () {
         enableProductsTable,
         addFeatureModel,
         addClientModel,
-        addProductModel
+        addProductModel,
+        filtterFeatures
 
     };
 }();
