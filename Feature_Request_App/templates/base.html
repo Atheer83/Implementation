@@ -28,7 +28,7 @@
                     </div>
                     <div>
                       <select data-bind="options: FeaturesGrid.clientsList, optionsText: 'name', optionsValue: 'id',
-                                        optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id, click: FeaturesGrid.filtterFeatures">
+                                        optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id, click: FeaturesGrid.filtterFeaturesByClient">
                       </select>
                     </div>
                       
@@ -38,10 +38,8 @@
                         <label class="label">Select Product Area</label>
                     </div>
                     <div>
-                      <select data-bind="options: FeaturesGrid.productsList,
-                        optionsText: 'name',
-                        optionsValue: 'id',
-                        optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id">
+                      <select data-bind="options: FeaturesGrid.productsList, optionsText: 'name', optionsValue: 'id',
+                        optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id, click: FeaturesGrid.filtterFeaturesByProduct">
                       </select>
                     </div>
                           
