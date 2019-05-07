@@ -12,6 +12,60 @@ features = Blueprint('feature_requests',__name__)
 def home():
      return render("index.html")
 
+#Get client features 
+@features.route('/clientFeatures/<id>',methods=['GET'])
+def get_client_features(id):
+     client_features = FeatureRequest.query.filter_by(client_id=id)
+     all_clients = Clients.query.all()
+     all_products = Products.query.all()
+     features_result = features_schema.dump(client_features)
+     clients_result = clients_schema.dump(all_clients)
+     products_result = products_schema.dump(all_products)
+     for i in range(len(features_result.data)):
+          client_id = features_result.data[i]['client_id']
+          product_id = features_result.data[i]['product_area_id']
+          client_name = clients_result.data[client_id - 1]['name']
+          product_name = products_result.data[product_id - 1]['name']
+          features_result.data[i]['client_id'] = client_name
+          features_result.data[i]['product_area_id'] = product_name          
+     return jsonify(features_result.data)
+
+#Get product area features 
+@features.route('/productFeatures/<id>',methods=['GET'])
+def get_product_features(id):
+     product_features = FeatureRequest.query.filter_by(product_area_id=id)
+     all_clients = Clients.query.all()
+     all_products = Products.query.all()
+     features_result = features_schema.dump(product_features)
+     clients_result = clients_schema.dump(all_clients)
+     products_result = products_schema.dump(all_products)
+     for i in range(len(features_result.data)):
+          client_id = features_result.data[i]['client_id']
+          product_id = features_result.data[i]['product_area_id']
+          client_name = clients_result.data[client_id - 1]['name']
+          product_name = products_result.data[product_id - 1]['name']
+          features_result.data[i]['client_id'] = client_name
+          features_result.data[i]['product_area_id'] = product_name          
+     return jsonify(features_result.data)
+
+#Get client product area features 
+@features.route('/clientProductFeatures/<clientId>/<productId>',methods=['GET'])
+def get_client_product_features(clientId,productId):
+     client_product_features = FeatureRequest.query.filter_by(client_id=clientId,product_area_id=productId)
+     all_clients = Clients.query.all()
+     all_products = Products.query.all()
+     features_result = features_schema.dump(client_product_features)
+     clients_result = clients_schema.dump(all_clients)
+     products_result = products_schema.dump(all_products)
+     for i in range(len(features_result.data)):
+          client_id = features_result.data[i]['client_id']
+          product_id = features_result.data[i]['product_area_id']
+          client_name = clients_result.data[client_id - 1]['name']
+          product_name = products_result.data[product_id - 1]['name']
+          features_result.data[i]['client_id'] = client_name
+          features_result.data[i]['product_area_id'] = product_name          
+     return jsonify(features_result.data)
+
 
 #Get all features
 @features.route('/features',methods=['GET'])

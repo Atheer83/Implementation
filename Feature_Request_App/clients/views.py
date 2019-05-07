@@ -6,13 +6,6 @@ import json
 
 clients = Blueprint('clients',__name__)
 
-#Get client features 
-@clients.route('/clients/<id>',methods=['GET'])
-def get_client(id):
-     client = Clients.query.get(id)
-     return client_schema.jsonify(client)
-
-
 #Get all clients
 @clients.route('/clients',methods=['GET'])
 def get_clients():
