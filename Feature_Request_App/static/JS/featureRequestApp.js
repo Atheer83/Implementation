@@ -146,7 +146,9 @@ var FeaturesGrid = function () {
     // callback function for saving feature
     var saveFeatureCallback = function (e) {
         // feature.displayMode (displayMode.view);
-        fetchFeatures()
+        addFeatureModel.client_id = undefined;
+        addFeatureModel.product_area_id = undefined;
+        fetchFeatures()   
     };
 
     // callback function for saving client
@@ -308,13 +310,64 @@ var FeaturesGrid = function () {
     var enableClientsTable = ko.observable(false)
     var enableProductsTable = ko.observable(false)
 
-    var filtterFeatures = function(e){
-        var id = e.addFeatureModel.client_id;
-        ClientService.getClientFeatures(id, filtterFeaturesCallback)
+    var filtterFeaturesByClient = function(e){
+        console.log(e.addFeatureModel.client_id, e.addFeatureModel.product_area_id)
+        var clientId = e.addFeatureModel.client_id;
+        var productId = e.addFeatureModel.product_area_id;
+        if(clientId !== undefined && productId === undefined) {
+            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
+        } else if (clientId !== undefined && productId !== undefined) {
+            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
+        } else if (clientId === undefined && productId !== undefined) {
+            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
+        } else {
+            fetchFeatures(); 
+        }
     }
 
-    var filtterFeaturesCallback = function(data) {
-        console.log(data)
+    var filtterFeaturesByProduct = function(e){
+        console.log(e.addFeatureModel.client_id, e.addFeatureModel.product_area_id)
+        var clientId = e.addFeatureModel.client_id;
+        var productId = e.addFeatureModel.product_area_id;
+        if(productId !== undefined && clientId === undefined) {
+            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
+        } else if (productId !== undefined && clientId !== undefined) {
+            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
+        } else if (productId === undefined && clientId !== undefined) {
+            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
+        } else {
+            fetchFeatures(); 
+        }
+    }
+
+    var filtterFeaturesByClientCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            var date = new Date(item.target_date)
+            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+            item.target_date = newDate;
+            features.push(new featureModel(item, displayMode.view));
+        });
+    }
+
+    var filtterFeaturesByProductCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            var date = new Date(item.target_date)
+            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+            item.target_date = newDate;
+            features.push(new featureModel(item, displayMode.view));
+        });
+    }
+
+    var filtterFeaturesByClientProductCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            var date = new Date(item.target_date)
+            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+            item.target_date = newDate;
+            features.push(new featureModel(item, displayMode.view));
+        });
     }
 
     var init = function () {
@@ -358,7 +411,8 @@ var FeaturesGrid = function () {
         addFeatureModel,
         addClientModel,
         addProductModel,
-        filtterFeatures
+        filtterFeaturesByClient,
+        filtterFeaturesByProduct,
 
     };
 }();
