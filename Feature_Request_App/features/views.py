@@ -85,14 +85,34 @@ def get_features():
           features_result.data[i]['product_area_id'] = product_name          
      return jsonify(features_result.data)
 
+# Add new feature
 @features.route('/features',methods=['POST'])
 def add_feature():
-     # data = request.get_json()
+     client_priority=request.json['client_priority']
+     client_id=request.json['client_id']
+     client_features = FeatureRequest.query.filter_by(client_id=client_id).order_by('client_priority')
+     features_result = features_schema.dump(client_features)
+     if features_result.data:
+          new_priority = 0
+          for i in range(len(features_result.data)):
+               if client_priority == str (features_result.data[i]['client_priority']):
+                    new_priority = features_result.data[i]['client_priority']
+                    break
+          if new_priority > 0:
+               for i in range(len(features_result.data)):
+                    current_priority = features_result.data[i]['client_priority']
+                    if current_priority >= int(new_priority):
+                         id = features_result.data[i]['id']
+                         update_feature_priority(id)
+                    if (i+1) < len(features_result.data):
+                         if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                              break
+
+          
      title=request.json['title']
      description=request.json['description']
      target=request.json['target_date']
      target_date=datetime.strptime(target, '%Y-%m-%d')
-     client_priority=request.json['client_priority']
      client_id=request.json['client_id']
      product_area_id=request.json['product_area_id']
 
@@ -100,7 +120,6 @@ def add_feature():
 
      db.session.add(feature_req)
      db.session.commit()
-     print(feature_schema.jsonify(feature_req))
      return feature_schema.jsonify(feature_req)
 
 # Delete a Feature
@@ -137,6 +156,10 @@ def update_feature(id):
 
   return feature_schema.jsonify(feature)
 
+def update_feature_priority(id):
+  feature = FeatureRequest.query.get(id)
+  feature.client_priority = feature.client_priority + 1
+  db.session.commit()
      
     
     
