@@ -139,13 +139,27 @@ def update_feature(id):
      clientu_id=request.json['client_id']
      client_features = FeatureRequest.query.filter_by(client_id=clientu_id).order_by('client_priority')
      features_result = features_schema.dump(client_features)
-     print(feature.client_priority,client_priority)
+     print(feature.client_id,clientu_id)
      new_priority = 0
      if features_result.data:
-          for i in range(len(features_result.data)):
-               if client_priority == str (features_result.data[i]['client_priority']):
-                    id = features_result.data[i]['id']
-                    replace_feature_priority(id,feature.client_priority)
+          if clientu_id != feature.client_id:
+               for i in range(len(features_result.data)):
+                    if client_priority == features_result.data[i]['client_priority']:
+                         new_priority=client_priority
+                         break
+               for i in range(len(features_result.data)):
+                    current_priority = features_result.data[i]['client_priority']
+                    if current_priority >= int(new_priority):
+                         id = features_result.data[i]['id']
+                         update_feature_priority(id)
+                    if (i+1) < len(features_result.data):
+                         if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                              break
+          elif clientu_id == feature.client_id:
+               for i in range(len(features_result.data)):
+                    if client_priority == str (features_result.data[i]['client_priority']):
+                         id = features_result.data[i]['id']
+                         replace_feature_priority(id,feature.client_priority)
                  
      title = request.json['title']
      description=request.json['description']
