@@ -9,8 +9,12 @@ border-color: #007bff;
 }
 
 #sideNav {
-  margin-top: 5rem;
+  margin-top: 1rem;
 }
 .addButtons{
   float: right;
+}
+
+h2{
+  color: #007bff;
 }

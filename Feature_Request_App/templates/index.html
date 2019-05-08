@@ -3,8 +3,8 @@
 
 <div data-bind="visible: FeaturesGrid.enableFeaturesTable" class="card">
    <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addFeature"  data-toggle="modal" data-target="#featureModal">
-      <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
-   </a></span>Features</h5>
+      <span style="font-size: 1.3em; color: Dodgerblue;"><i data-toggle="tooltip" data-placement="top" title="Add New Feature" class="fas fa-plus-circle"></i></span>
+   </a></span>New Feature</h5>
   <div class="card-body">
     <!-- Button trigger modal -->
   <div class="card-body">
@@ -28,8 +28,8 @@
           <td data-bind="text: data.description"></td>
           <td data-bind="text: data.product_area_id"></td>
           <td data-bind="text: data.target_date"></td>
-          <td><a href data-bind="click: FeaturesGrid.editFeature"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
-            <a href data-bind="click: FeaturesGrid.deleteFeature"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
+          <td><a data-toggle="tooltip" data-placement="top" title="Edit Feature" href data-bind="click: FeaturesGrid.editFeature"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
+            <a data-toggle="tooltip" data-placement="top" title="Delete Feature" href data-bind="click: FeaturesGrid.deleteFeature"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
         </tr>
         <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
           <td><input type="number" class="form-control" data-bind="value: data.client_priority" required/></td>
@@ -41,7 +41,7 @@
               optionsText: 'name', optionsValue: 'id', optionsCaption: 'Choose Product', value: data.product_area_id" required></select></td>
           <td><input type="date" class="form-control" data-bind="value: data.target_date" required/></td>
           <td>
-              <a href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+              <a  href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
           </td>
             
         </tr>
@@ -59,9 +59,9 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-        </div>
+        </div >
         <div class="modal-body">
-          <form class="needs-validation" data-bind="submit: FeaturesGrid.saveFeature">
+          <form class="needs-validation" id="addFeatureForm"  data-bind="submit: FeaturesGrid.saveFeature">
             <div class="form-group">
               <label >Title</label>
               <input type="text" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.title" required>
@@ -93,7 +93,7 @@
               <input type="date" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.target_date" required>
             </div>
                    
-                <button class="btn btn-primary" type="submit">Save</button>
+                <button  data-toggle="modal" data-target="#featureModal" class="btn btn-primary" type="submit">Save</button>
             </form>
         </div>
       </div>
@@ -101,9 +101,9 @@
   </div>
 
 <div data-bind="visible: FeaturesGrid.enableClientsTable" class="card">
-    <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addClient"  data-toggle="modal" data-target="#clientModal">
-        <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
-     </a></span>Clients</h5>    
+    <h5 class="card-header"><span><a  href data-bind="click: FeaturesGrid.addClient"  data-toggle="modal" data-target="#clientModal">
+        <span style="font-size: 1.3em; color: Dodgerblue;"><i data-toggle="tooltip" data-placement="top" title="Add New Client" class="fas fa-plus-circle"></i></span>
+     </a></span>New Client</h5>    
     <div class="card-body">
       <div class="card-body">
         <table class="table table-hover">
@@ -116,13 +116,13 @@
           <tbody data-bind="foreach: FeaturesGrid.clients">
             <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
               <td data-bind="text: data.name"></td>
-               <td><a href data-bind="click: FeaturesGrid.editClient"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
-                <a href data-bind="click: FeaturesGrid.deleteClient"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
+               <td><a data-toggle="tooltip" data-placement="top" title="Edit Client" href data-bind="click: FeaturesGrid.editClient"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
+                <a data-toggle="tooltip" data-placement="top" title="Delete Client" href data-bind="click: FeaturesGrid.deleteClient"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
              </tr>
              <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
                 <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
                 <td>
-                    <a href data-bind="click: FeaturesGrid.updateClient"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+                    <a  href data-bind="click: FeaturesGrid.updateClient"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
                 </td>
              </tr>
           </tbody>
@@ -141,12 +141,12 @@
             </button>
           </div>
           <div class="modal-body">
-            <form class="needs-validation" data-bind="submit: FeaturesGrid.saveClient">
+            <form class="needs-validation" id="addClientForm" data-bind="submit: FeaturesGrid.saveClient">
               <div class="form-group">
                 <label >Name</label>
                 <input type="text" class="form-control" data-bind="value: FeaturesGrid.addClientModel.clientName" required>
               </div>
-                  <button class="btn btn-primary" type="submit">Save</button>
+                  <button  class="btn btn-primary" data-toggle="modal" data-target="#clientModal" type="submit">Save</button>
               </form>
           </div>
         </div>
@@ -154,9 +154,9 @@
     </div>
 
   <div data-bind="visible: FeaturesGrid.enableProductsTable" class="card">
-      <h5 class="card-header"><span><a href data-bind="click: FeaturesGrid.addProduct"  data-toggle="modal" data-target="#productModal">
-          <span style="font-size: 1.3em; color: Dodgerblue;"><i class="fas fa-plus-circle"></i></span>
-       </a></span>Products</h5>   
+      <h5 class="card-header"><span><a  href data-bind="click: FeaturesGrid.addProduct"  data-toggle="modal" data-target="#productModal">
+          <span style="font-size: 1.3em; color: Dodgerblue;"><i data-toggle="tooltip" data-placement="top" title="Add New Product" class="fas fa-plus-circle"></i></span>
+       </a></span>New Product Area</h5>   
       <div class="card-body">
 
       <div class="card-body">
@@ -170,13 +170,13 @@
             <tbody data-bind="foreach: FeaturesGrid.products">
               <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.view">
                 <td data-bind="text: data.name"></td>
-                <td><a href data-bind="click: FeaturesGrid.editProduct"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
-                  <a href data-bind="click: FeaturesGrid.deleteProduct"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
+                <td><a data-toggle="tooltip" data-placement="top" title="Edit Product" href data-bind="click: FeaturesGrid.editProduct"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Delete Product" href data-bind="click: FeaturesGrid.deleteProduct"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
                </tr>
                <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
                   <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
                   <td>
-                      <a href data-bind="click: FeaturesGrid.updateProduct"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+                      <a  href data-bind="click: FeaturesGrid.updateProduct"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
                   </td>
                  
                </tr>
@@ -195,12 +195,12 @@
               </button>
             </div>
             <div class="modal-body">
-              <form class="needs-validation" data-bind="submit: FeaturesGrid.saveProduct">
+              <form class="needs-validation" id="addProductForm" data-bind="submit: FeaturesGrid.saveProduct">
                 <div class="form-group">
                   <label >Name</label>
                   <input type="text" class="form-control" data-bind="value: FeaturesGrid.addProductModel.productName" required>
                 </div>
-                    <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#productModal" type="submit">Save</button>
                 </form>
             </div>
           </div>
