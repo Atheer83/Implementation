@@ -34,14 +34,14 @@
         <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
           <td><input type="number" class="form-control" data-bind="value: data.client_priority" required/></td>
           <td><select data-bind="options: FeaturesGrid.clientsList,
-                optionsText: 'name', optionsValue: 'id', optionsCaption: 'Choose Client', value: data.client_id" required></select></td>
+                optionsText: 'name', optionsValue: 'id', value: data.client_id" required></select></td>
           <td><input type="text" class="form-control" data-bind="value: data.title" required/></td>
           <td><input type="text" class="form-control" data-bind="value: data.description" required/></td>
           <td><select data-bind="options: FeaturesGrid.productsList,
-              optionsText: 'name', optionsValue: 'id', optionsCaption: 'Choose Product', value: data.product_area_id" required></select></td>
+              optionsText: 'name', optionsValue: 'id', value: data.product_area_id" required></select></td>
           <td><input type="date" class="form-control" data-bind="value: data.target_date" required/></td>
           <td>
-              <a  href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+              <a  data-toggle="tooltip" data-placement="top" title="Update Feature"href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
           </td>
             
         </tr>
@@ -122,7 +122,7 @@
              <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
                 <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
                 <td>
-                    <a  href data-bind="click: FeaturesGrid.updateClient"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Update Client" href data-bind="click: FeaturesGrid.updateClient"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
                 </td>
              </tr>
           </tbody>
@@ -176,7 +176,7 @@
                <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
                   <td><input type="text" class="form-control" data-bind="value: data.name" /></td>
                   <td>
-                      <a  href data-bind="click: FeaturesGrid.updateProduct"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
+                      <a data-toggle="tooltip" data-placement="top" title="Update Product" href data-bind="click: FeaturesGrid.updateProduct"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
                   </td>
                  
                </tr>

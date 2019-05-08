@@ -8,13 +8,13 @@ var FeaturesGrid = function () {
 
     // model for adding feature
     var addFeatureModel = function () {
-        // this.id = ko.observable(item.id);
-        this.title = ko.observable();
-        this.description = ko.observable();
-        this.client_id = ko.observable();
-        this.product_area_id = ko.observable();
-        this.client_priority = ko.observable();
-        this.target_date = ko.observable();
+        this.id = ko.observable(item.id);
+        this.title = ko.observable(item.title);
+        this.description = ko.observable(item.description);
+        this.client_id = ko.observable(item.client_id);
+        this.product_area_id = ko.observable(item.product_area_id);
+        this.client_priority = ko.observable(item.client_priority);
+        this.target_date = ko.observable(item.target_date);
         this.displayMode = ko.observable(itemMode);
     } 
 
@@ -69,9 +69,7 @@ var FeaturesGrid = function () {
     var features = ko.observableArray()
 
     var sortBy = function() {
-        console.log("hiiiiiiii")
         features.sort(function(left, right){
-            console.log(left.data.client_priority())
             return left.data.client_priority() == right.data.client_priority() ? 
             0 : left.data.client_priority() < right.data.client_priority() ? -1 : 1
         });
@@ -98,7 +96,6 @@ var FeaturesGrid = function () {
             clientsObj['id'] = listOfClients[i].data.id();
             clientsList.push(clientsObj)
             }
-            console.log(clientsList())
         };
 
     var getAllProducts = function () {
