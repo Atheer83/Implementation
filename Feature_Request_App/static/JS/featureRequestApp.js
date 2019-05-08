@@ -8,13 +8,13 @@ var FeaturesGrid = function () {
 
     // model for adding feature
     var addFeatureModel = function () {
-        this.id = ko.observable(item.id);
-        this.title = ko.observable(item.title);
-        this.description = ko.observable(item.description);
-        this.client_id = ko.observable(item.client_id);
-        this.product_area_id = ko.observable(item.product_area_id);
-        this.client_priority = ko.observable(item.client_priority);
-        this.target_date = ko.observable(item.target_date);
+        // this.id = ko.observable(item.id);
+        this.title = ko.observable();
+        this.description = ko.observable();
+        this.client_id = ko.observable();
+        this.product_area_id = ko.observable();
+        this.client_priority = ko.observable();
+        this.target_date = ko.observable();
         this.displayMode = ko.observable(itemMode);
     } 
 
@@ -123,6 +123,7 @@ var FeaturesGrid = function () {
 
     // add rquest to the feature service
     var saveFeature = function () {
+        document.getElementById("addFeatureForm").reset();
         var feature = {
             'title':addFeatureModel.title,
             'description':addFeatureModel.description,
@@ -132,19 +133,21 @@ var FeaturesGrid = function () {
             'target_date':addFeatureModel.target_date,
         }
         FeaturesClient.addFeature(feature, saveFeatureCallback);
+        
     }
 
     // add rquest to the client service
     var saveClient = function () {
+        document.getElementById("addClientForm").reset();
         var client = {
             'name':addClientModel.clientName,
         }
-        console.log(client)
         ClientService.addClient(client, saveClientCallback);
     }
 
     // add rquest to the product service
     var saveProduct = function (product) {
+        document.getElementById("addProductForm").reset();
         var product = {
             'name':addProductModel.productName,
         }
@@ -153,23 +156,26 @@ var FeaturesGrid = function () {
 
     // callback function for saving feature
     var saveFeatureCallback = function (e) {
-        // feature.displayMode (displayMode.view);
+        addFeatureModel.title = undefined;
+        addFeatureModel.description = undefined;
         addFeatureModel.client_id = undefined;
         addFeatureModel.product_area_id = undefined;
+        addFeatureModel.client_priority = undefined;
+        addFeatureModel.target_date = undefined;
         fetchFeatures()  
         sortBy() 
     };
 
     // callback function for saving client
     var saveClientCallback = function (client) {
-        // feature.displayMode (displayMode.view);
+        addClientModel.name = undefined;
         fetchClients();
         getAllClients()
     };
 
      // callback function for saving product
      var saveProductCallback = function (product) {
-        // feature.displayMode (displayMode.view);
+        addProductModel.name = undefined;
         fetchProducts();
         getAllProducts();
     };
