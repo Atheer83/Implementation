@@ -134,32 +134,44 @@ def delete_feature(id):
 # Update a Feature
 @features.route('/features/<id>', methods=['PUT'])
 def update_feature(id):
-  feature = FeatureRequest.query.get(id)
+     feature = FeatureRequest.query.get(id)
+     client_priority=request.json['client_priority']
+     clientu_id=request.json['client_id']
+     client_features = FeatureRequest.query.filter_by(client_id=clientu_id).order_by('client_priority')
+     features_result = features_schema.dump(client_features)
+     print(feature.client_priority,client_priority)
+     new_priority = 0
+     if features_result.data:
+          for i in range(len(features_result.data)):
+               if client_priority == str (features_result.data[i]['client_priority']):
+                    id = features_result.data[i]['id']
+                    replace_feature_priority(id,feature.client_priority)
+                 
+     title = request.json['title']
+     description=request.json['description']
+     target=request.json['target_date']
+     target_date=datetime.strptime(target, '%Y-%m-%d')
+     product_area_id=request.json['product_area_id']
 
-  title = request.json['title']
-  description=request.json['description']
-  target=request.json['target_date']
-  target_date=datetime.strptime(target, '%Y-%m-%d')
-  client_priority=request.json['client_priority']
-  client_id=request.json['client_id']
-  product_area_id=request.json['product_area_id']
-
-  feature.title = title
-  feature.description = description
-  feature.target_date = target_date
-  feature.client_priority = client_priority
-  feature.client_id = client_id
-  feature.product_area_id = product_area_id
+     feature.title = title
+     feature.description = description
+     feature.target_date = target_date
+     feature.client_priority = client_priority
+     feature.client_id = clientu_id
+     feature.product_area_id = product_area_id
 
 
-  db.session.commit()
+     db.session.commit()
 
-  return feature_schema.jsonify(feature)
+     return feature_schema.jsonify(feature)
 
 def update_feature_priority(id):
-  feature = FeatureRequest.query.get(id)
-  feature.client_priority = feature.client_priority + 1
-  db.session.commit()
+     feature = FeatureRequest.query.get(id)
+     feature.client_priority = feature.client_priority + 1
+     db.session.commit()
      
-    
+def replace_feature_priority(id,new_priority):
+     feature = FeatureRequest.query.get(id)
+     feature.client_priority = new_priority
+     db.session.commit()
     
