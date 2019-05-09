@@ -93,6 +93,7 @@ def add_feature():
      client_features = FeatureRequest.query.filter_by(client_id=client_id).order_by('client_priority')
      features_result = features_schema.dump(client_features)
      if features_result.data:
+          print(type (client_priority), type (features_result.data[0]['client_priority']))
           new_priority = 0
           for i in range(len(features_result.data)):
                if client_priority == str (features_result.data[i]['client_priority']):
@@ -101,12 +102,12 @@ def add_feature():
           if new_priority > 0:
                for i in range(len(features_result.data)):
                     current_priority = features_result.data[i]['client_priority']
-                    if current_priority >= int(new_priority):
+                    if current_priority >= (new_priority):
                          id = features_result.data[i]['id']
                          update_feature_priority(id)
-                    if (i+1) < len(features_result.data):
-                         if current_priority + 1 < features_result.data[i + 1]['client_priority']:
-                              break
+                         if (i+1) < len(features_result.data):
+                              if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                                   break
 
           
      title=request.json['title']
@@ -136,13 +137,13 @@ def delete_feature(id):
 def update_feature(id):
      feature = FeatureRequest.query.get(id)
      client_priority=request.json['client_priority']
-     clientu_id=request.json['client_id']
-     client_features = FeatureRequest.query.filter_by(client_id=clientu_id).order_by('client_priority')
+     client_id=request.json['client_id']
+     client_features = FeatureRequest.query.filter_by(client_id=client_id).order_by('client_priority')
      features_result = features_schema.dump(client_features)
-     print(feature.client_id,clientu_id)
+     print(feature.client_id,client_id)
      new_priority = 0
      if features_result.data:
-          if clientu_id != feature.client_id:
+          if client_id != feature.client_id:
                for i in range(len(features_result.data)):
                     if client_priority == features_result.data[i]['client_priority']:
                          new_priority=client_priority
@@ -152,14 +153,46 @@ def update_feature(id):
                     if current_priority >= int(new_priority):
                          id = features_result.data[i]['id']
                          update_feature_priority(id)
-                    if (i+1) < len(features_result.data):
-                         if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                         if (i+1) < len(features_result.data):
+                              if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                                   break
+          elif client_id == feature.client_id:
+               if int(client_priority) > feature.client_priority:
+                    print("new > old")
+                    for i in range(len(features_result.data)):
+                         if int(client_priority) == features_result.data[i]['client_priority']:
+                              new_priority=int(client_priority)
+                              print(new_priority, "new_priority")
                               break
-          elif clientu_id == feature.client_id:
-               for i in range(len(features_result.data)):
-                    if client_priority == str (features_result.data[i]['client_priority']):
-                         id = features_result.data[i]['id']
-                         replace_feature_priority(id,feature.client_priority)
+                    for i in range(len(features_result.data)):
+                         current_priority = features_result.data[i]['client_priority']
+                         print(current_priority, " current_priority")
+                         if current_priority >= new_priority:
+                              id = features_result.data[i]['id']
+                              update_feature_priority(id)
+                              if (i+1) < len(features_result.data):
+                                   if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                                        break
+
+               elif int(client_priority) < feature.client_priority:
+                    print("new < old")
+                    for i in range(len(features_result.data)):
+                         if int(client_priority) == features_result.data[i]['client_priority']:
+                              new_priority=int(client_priority)
+                              print(new_priority, "new_priority")
+                              break
+                    for i in range(len(features_result.data)):
+                         current_priority = features_result.data[i]['client_priority']
+                         print(current_priority, " current_priority")
+                         if current_priority == feature.client_priority:
+                              print(feature.client_priority, "old")
+                              break 
+                         if current_priority >= new_priority:
+                              id = features_result.data[i]['id']
+                              update_feature_priority(id)
+                              if (i+1) < len(features_result.data):
+                                   if current_priority + 1 < features_result.data[i + 1]['client_priority']:
+                                        break
                  
      title = request.json['title']
      description=request.json['description']
@@ -171,7 +204,7 @@ def update_feature(id):
      feature.description = description
      feature.target_date = target_date
      feature.client_priority = client_priority
-     feature.client_id = clientu_id
+     feature.client_id = client_id
      feature.product_area_id = product_area_id
 
 
@@ -184,8 +217,8 @@ def update_feature_priority(id):
      feature.client_priority = feature.client_priority + 1
      db.session.commit()
      
-def replace_feature_priority(id,new_priority):
-     feature = FeatureRequest.query.get(id)
-     feature.client_priority = new_priority
-     db.session.commit()
+# def replace_feature_priority(id,new_priority):
+#      feature = FeatureRequest.query.get(id)
+#      feature.client_priority = new_priority
+#      db.session.commit()
     
