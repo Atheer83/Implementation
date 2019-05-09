@@ -39,7 +39,7 @@
           <td><input type="text" class="form-control" data-bind="value: data.description" required/></td>
           <td><select data-bind="options: FeaturesGrid.productsList,
               optionsText: 'name', optionsValue: 'id', value: data.product_area_id" required></select></td>
-          <td><input type="date" class="form-control" data-bind="value: data.target_date" required/></td>
+          <td><input type="date" class="form-control" data-bind="value: data.target_date"/></td>
           <td>
               <a  data-toggle="tooltip" data-placement="top" title="Update Feature"href data-bind="click: FeaturesGrid.updateFeature"><span style="font-size: 1.4em; color: Dodgerblue;"><i class="fas fa-wrench"></i></span></a>
           </td>

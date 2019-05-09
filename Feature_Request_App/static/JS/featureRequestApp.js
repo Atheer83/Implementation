@@ -279,7 +279,7 @@ var FeaturesGrid = function () {
         features([]);
         data.forEach(function(item) {
             var date = new Date(item.target_date)
-            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+            var newDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() 
             item.target_date = newDate;
             features.push(new featureModel(item, displayMode.view));
         });
