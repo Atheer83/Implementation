@@ -14,48 +14,28 @@ def home():
 @features.route('/clientFeatures/<id>',methods=['GET'])
 def get_client_features(id):
      client_features = FeatureRequest.query.filter_by(client_id=id)
-     all_clients = Clients.query.all()
-     all_products = Products.query.all()
      features_result = features_schema.dump(client_features)
-     clients_result = clients_schema.dump(all_clients)
-     products_result = products_schema.dump(all_products)
-     switch_id_to_name(features_result,clients_result,products_result) 
      return jsonify(features_result.data)
 
 #Get All Features for a Product Area 
 @features.route('/productFeatures/<id>',methods=['GET'])
 def get_product_features(id):
      product_features = FeatureRequest.query.filter_by(product_area_id=id)
-     all_clients = Clients.query.all()
-     all_products = Products.query.all()
-     features_result = features_schema.dump(product_features)
-     clients_result = clients_schema.dump(all_clients)
-     products_result = products_schema.dump(all_products)
-     switch_id_to_name(features_result,clients_result,products_result)       
+     features_result = features_schema.dump(product_features)   
      return jsonify(features_result.data)
 
 #Get All Features has a spesific Client and Product Area 
 @features.route('/clientProductFeatures/<clientId>/<productId>',methods=['GET'])
 def get_client_product_features(clientId,productId):
      client_product_features = FeatureRequest.query.filter_by(client_id=clientId,product_area_id=productId)
-     all_clients = Clients.query.all()
-     all_products = Products.query.all()
      features_result = features_schema.dump(client_product_features)
-     clients_result = clients_schema.dump(all_clients)
-     products_result = products_schema.dump(all_products)
-     switch_id_to_name(features_result,clients_result,products_result)     
      return jsonify(features_result.data)
 
 #Get All Features
 @features.route('/features',methods=['GET'])
 def get_features():
      all_features = FeatureRequest.query.all()
-     all_clients = Clients.query.all()
-     all_products = Products.query.all()
      features_result = features_schema.dump(all_features)
-     clients_result = clients_schema.dump(all_clients)
-     products_result = products_schema.dump(all_products)
-     switch_id_to_name(features_result,clients_result,products_result)     
      return jsonify(features_result.data)
 
 # Add a New Feature
@@ -95,16 +75,16 @@ def update_feature(id):
      new_client_id=request.json['client_id']
      new_title = request.json['title']
      new_description=request.json['description']
-     new_target=request.json['target_date']
+     target=request.json['target_date']
      new_target_date=datetime.strptime(target, '%Y-%m-%d')
      new_product_area_id=request.json['product_area_id']
-     client_features = FeatureRequest.query.filter_by(client_id=client_id).order_by('client_priority')
+     client_features = FeatureRequest.query.filter_by(client_id=new_client_id).order_by('client_priority')
      features_result = features_schema.dump(client_features)
 
      if features_result.data:
-          if client_id != feature.client_id:
+          if new_client_id != feature.client_id:
                adjust_priority(features_result,new_client_priority,0)
-          elif client_id == feature.client_id:
+          elif new_client_id == feature.client_id:
                if int(new_client_priority) > feature.client_priority:
                     adjust_priority(features_result,new_client_priority,0)
                elif int(new_client_priority) < feature.client_priority:
@@ -138,14 +118,5 @@ def adjust_priority(features_result,new_client_priority,old_priority):
                                    if current_priority + 1 < features_result.data[i + 1]['client_priority']:
                                         break
                     break
-
-def switch_id_to_name(features_result,clients_result,products_result):
-     for i in range(len(features_result.data)):
-          client_id = features_result.data[i]['client_id']
-          product_id = features_result.data[i]['product_area_id']
-          client_name = clients_result.data[client_id - 1]['name']
-          product_name = products_result.data[product_id - 1]['name']
-          features_result.data[i]['client_id'] = client_name
-          features_result.data[i]['product_area_id'] = product_name 
 
     
