@@ -8,8 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecret'
 
 # DATABASE SETUP
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir,'data.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://britecore:britecore@localhost:5432/requests' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
