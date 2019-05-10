@@ -159,7 +159,9 @@ var FeaturesGrid = function () {
         addFeatureModel.product_area_id = undefined;
         addFeatureModel.client_priority = undefined;
         addFeatureModel.target_date = undefined;
-        fetchFeatures()  
+        fetchFeatures() 
+        getAllClients();
+        getAllProducts(); 
         sortBy() 
     };
 
@@ -209,11 +211,22 @@ var FeaturesGrid = function () {
 
     // edit a feature
     var editFeature = function (feature) {
-        getAllClients();
-        getAllProducts();
         feature.displayMode(displayMode.edit)
     }
 
+    // show client name by client id
+    var showClientNametById = function(clientId){
+        if(clientsList()[clientId - 1]) {
+            return clientsList()[clientId - 1].name
+        }
+    }
+
+     // show product name by product id
+     var showProductNameById = function(productId){
+         if(productsList()[productId - 1] ) {
+            return productsList()[productId - 1].name
+         }
+    }
     // edit a client
     var editClient = function (client) {
         client.displayMode(displayMode.edit)
@@ -432,6 +445,8 @@ var FeaturesGrid = function () {
         addProductModel,
         filtterFeaturesByClient,
         filtterFeaturesByProduct,
+        showClientNametById,
+        showProductNameById
 
     };
 }();
