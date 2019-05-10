@@ -8,12 +8,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
+     
       <div class="container-fluid">
+          <nav class="navbar  bg-light" >
+              <h1>Feature Request App</h1>
+            </nav>
           <div class="card">
               <div class="card-body">
               <div class="row">
                   <div class="col-2">
-                    <h2>Feature Request</h2>
                     </div>
               <div class="col-10">
                   <div class="row">
@@ -28,13 +31,13 @@
                         </div>
                           
                       </div>
-                      <div data-bind="visible: FeaturesGrid.enableFeaturesTable" class="col-3">
+                      <div data-bind="visible: FeaturesGrid.enableFeaturesTable" class="col-2.7">
                         <div>
                             <label class="label"><h5>Features By Product Area</h5></label>
                         </div>
                         <div>
                           <select class="form-control form-control-lg" data-bind="options: FeaturesGrid.productsList, optionsText: 'name', optionsValue: 'id',
-                            optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id, click: FeaturesGrid.filtterFeaturesByProduct">
+                            optionsCaption: 'Choose Product Area', value: FeaturesGrid.addFeatureModel.product_area_id, click: FeaturesGrid.filtterFeaturesByProduct">
                           </select>
                         </div>
                               
@@ -71,9 +74,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
      <script type="text/javascript" src= "https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
-    <script type="text/javascript" src= "{{ url_for('static', filename='JS/productService.js') }}"></script>     
-    <script type="text/javascript" src= "{{ url_for('static', filename='JS/featuresClient.js') }}"></script> 
-    <script type="text/javascript" src= "{{ url_for('static', filename='JS/clientService.js') }}"></script> 
+    <script type="text/javascript" src= "{{ url_for('static', filename='JS/feature.service.js') }}"></script>     
+    <script type="text/javascript" src= "{{ url_for('static', filename='JS/client.service.js') }}"></script> 
+    <script type="text/javascript" src= "{{ url_for('static', filename='JS/product.service.js') }}"></script> 
     <script type="text/javascript" src= "{{ url_for('static', filename='JS/featureRequestApp.js') }}"></script> 
       
   
