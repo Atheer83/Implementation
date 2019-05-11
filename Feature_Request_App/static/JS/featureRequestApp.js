@@ -256,7 +256,17 @@ var FeaturesGrid = function () {
         ProductService.updateProduct(product, updateProductCallback);
     }
 
-
+    // Rebuild Database
+    var rebuildDatabase = function() {
+        FeaturesClient.rebuildDatabase(rebuildDatabaseCallback)
+    }
+ 
+    var rebuildDatabaseCallback = function(result) {
+        fetchFeatures()
+        fetchClients()
+        fetchProducts()
+        sortBy() 
+    }
     // callback function for updating feature
     var updateFeatureCallback = function (feature) {
         feature.displayMode(displayMode.view)
@@ -430,7 +440,8 @@ var FeaturesGrid = function () {
         fetchFeatures();
         fetchClients();
         fetchProducts();
-        formValidation()
+        formValidation();
+        rebuildDatabase();
         ko.applyBindings(FeaturesGrid); 
     };
 
@@ -473,7 +484,8 @@ var FeaturesGrid = function () {
         showClientNametById,
         showProductNameById,
         validSubmit,
-        enableDisableSubmit
+        enableDisableSubmit,
+        rebuildDatabase
 
     };
 }();

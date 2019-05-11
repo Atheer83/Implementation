@@ -54,10 +54,22 @@ var FeaturesClient = function () {
             }
         });
     };
+
+    var rebuildDatabase = function(callback) {
+        $.ajax({
+            url: "/rebuildDatabase",
+            type: "GET",
+            success: function (result) {
+                callback (result);
+            }
+        });
+    }
+
     return {
         addFeature: addFeature,
         getFeatures: getFeatures,
         deleteFeature: deleteFeature,
         updateFeature: updateFeature,
+        rebuildDatabase,
     };
 }();
