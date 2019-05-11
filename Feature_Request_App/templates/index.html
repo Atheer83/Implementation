@@ -10,11 +10,11 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th width='6%'>Priority</th>
-          <th width='9%'>Client</th>
+          <th width='7%'>Priority</th>
+          <th width='11%'>Client</th>
           <th width='9%'>Title</th>
-          <th width='50%'>Description</th>
-          <th width='9%'>Product Area</th>
+          <th width='45%'>Description</th>
+          <th width='11%'>Product Area</th>
           <th width='9%'>Date</th>
           <th width='8%'>Actions</th>
         </tr>
@@ -30,13 +30,13 @@
           <td><a data-toggle="tooltip" data-placement="top" title="Edit Feature" href data-bind="click: FeaturesGrid.editFeature"><span style="font-size: 1.4em; color: Mediumslateblue;"><i class="fas fa-edit"></i></span></a>
             <a data-toggle="tooltip" data-placement="top" title="Delete Feature" href data-bind="click: FeaturesGrid.deleteFeature"><span style="font-size: 1.4em; color: Tomato;"><i class="fas fa-trash-alt"></i></span></a></td>
         </tr>
-        <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit">
+        <tr data-bind="if: displayMode() === FeaturesGrid.displayMode.edit" required>
           <td><input type="number" class="form-control" data-bind="value: data.client_priority" required/></td>
-          <td><select data-bind="options: FeaturesGrid.clientsList,
+          <td><select class="form-control custom-select" data-bind="options: FeaturesGrid.clientsList,
                 optionsText: 'name', optionsValue: 'id', value: data.client_id" required></select></td>
           <td><input type="text" class="form-control" data-bind="value: data.title" required/></td>
           <td><input type="text" class="form-control" data-bind="value: data.description" required/></td>
-          <td><select data-bind="options: FeaturesGrid.productsList,
+          <td><select class="form-control custom-select" data-bind="options: FeaturesGrid.productsList,
               optionsText: 'name', optionsValue: 'id', value: data.product_area_id" required></select></td>
           <td><input type="date" class="form-control" data-bind="value: data.target_date"/></td>
           <td>
@@ -51,7 +51,7 @@
 </div>
   <!-- Modal -->
   <div class="modal fade" id="featureModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add Feature</h5>
@@ -60,39 +60,68 @@
           </button>
         </div >
         <div class="modal-body">
-          <form class="needs-validation" id="addFeatureForm"  data-bind="submit: FeaturesGrid.saveFeature">
+          <form class="needs-validation" id="addFeatureForm" novalidate  data-bind="submit: FeaturesGrid.saveFeature">
             <div class="form-group">
-              <label >Title</label>
-              <input type="text" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.title" required>
+              <label for="validationTitle">Title</label>
+              <input type="text" class="form-control" id="validationTitle" data-bind="value: FeaturesGrid.addFeatureModel.title" required>
+              <div class="invalid-feedback">
+                  Please Put a Title.
+                </div>
             </div>
             <div class="form-group">
-              <label >Description</label>
-              <textarea type="text" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.description" rows="3" required></textarea>
+              <label for="validationDescription">Description</label>
+              <textarea type="text" class="form-control" id="validationDescription" data-bind="value: FeaturesGrid.addFeatureModel.description" rows="3" required></textarea>
+            <div class="invalid-feedback">
+                  Please Put a Description.
+                </div>
             </div>
-            <div class="form-group">
-              <label >Client</label>
-              <select data-bind="options: FeaturesGrid.clientsList, optionsText: 'name', optionsValue: 'id',
-                                optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id" required>
-              </select>
+            <div class="form-row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="validationClient">Client</label>
+                  <select class="form-control custom-select" id="validationClient" data-bind="options: FeaturesGrid.clientsList, optionsText: 'name', optionsValue: 'id',
+                                    optionsCaption: 'Choose Client', value: FeaturesGrid.addFeatureModel.client_id" required>
+                  </select>
+            <div class="invalid-feedback">
+                  Please Choose a Client.
+                </div>
             </div>
+            </div>
+            <div class="col">
             <div class="form-group">
-              <label >Product Area</label>
-              <select data-bind="options: FeaturesGrid.productsList,
+              <label for="validationProductArea">Product Area</label>
+              <select class="form-control custom-select" id="validationProductArea" data-bind="options: FeaturesGrid.productsList,
                 optionsText: 'name',
                 optionsValue: 'id',
                 optionsCaption: 'Choose Product', value: FeaturesGrid.addFeatureModel.product_area_id" required>
               </select>
+            <div class="invalid-feedback">
+                  Please Choose a Product Area.
+                </div>
             </div>
+            </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
             <div class="form-group">
-              <label >Priority</label>
-              <input type="number" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.client_priority" required>
+              <label for="validationPriority">Priority</label>
+              <input type="number" class="form-control" id="Priority" data-bind="value: FeaturesGrid.addFeatureModel.client_priority" required>
+            <div class="invalid-feedback">
+                  Please put a Number of Priority.
+                </div>
             </div>
+                </div>
+            <div class="col">    
             <div class="form-group">
-              <label >Target Date</label>
-              <input type="date" class="form-control" data-bind="value: FeaturesGrid.addFeatureModel.target_date" required>
+              <label for="validationTargetDate">Target Date</label>
+              <input type="date" class="form-control" id="validationTargetDate" data-bind="value: FeaturesGrid.addFeatureModel.target_date" required>
+            <div class="invalid-feedback">
+                  Please Pick a Date.
+                </div>
             </div>
-                   
-                <button  data-toggle="modal" data-target="#featureModal" class="btn btn-primary" type="submit">Save</button>
+            </div> 
+            </div>      
+                <button  data-bind="enable: FeaturesGrid.validSubmit" class="btn btn-primary" data-toggle="modal" data-target="#featureModal" type="submit">Save</button>
             </form>
         </div>
       </div>
@@ -205,6 +234,6 @@
           </div>
         </div>
       </div>
-
+     
 
 {% endblock %}
