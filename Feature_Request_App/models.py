@@ -72,27 +72,3 @@ features_schema = FeatureRequestSchema(many=True,strict=True)
 
 
 
-db.drop_all()
-db.create_all()
-
-clientA = Clients('ClientA')
-clientB = Clients('ClientB')
-clientC = Clients('ClientC')
-
-area1=Products('Policies')
-area2=Products('Billings')
-area3=Products('Claims')
-area4=Products('Reports')
-
-db.session.add(clientA)
-db.session.add(clientB)
-db.session.add(clientC)
-
-db.session.add(area1)
-db.session.add(area2)
-db.session.add(area3)
-db.session.add(area4)
-
-
-db.session.commit()
-        

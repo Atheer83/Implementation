@@ -100,6 +100,30 @@ def update_feature(id):
      db.session.commit()
      return jsonify({'Success': 'Update Feature successfully'})
 
+# Rebuild Database
+@features.route('/rebuildDatabase', methods=['GET'])
+def rebuild_database():
+     db.drop_all()
+     db.create_all()
+     clientA = Clients('ClientA')
+     clientB = Clients('ClientB')
+     clientC = Clients('ClientC')
+     area1=Products('Policies')
+     area2=Products('Billings')
+     area3=Products('Claims')
+     area4=Products('Reports')
+     db.session.add(clientA)
+     db.session.add(clientB)
+     db.session.add(clientC)
+     db.session.add(area1)
+     db.session.add(area2)
+     db.session.add(area3)
+     db.session.add(area4)
+     db.session.commit()
+     return jsonify({'Success': 'Rebuild Database successfully'})
+
+        
+
 #Change Priority when add or update
 def adjust_priority(features_result,new_client_priority,old_priority):
       for i in range(len(features_result.data)):
