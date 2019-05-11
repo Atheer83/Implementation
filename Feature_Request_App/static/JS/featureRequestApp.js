@@ -130,6 +130,7 @@ var FeaturesGrid = function () {
             'target_date':addFeatureModel.target_date,
         }
         FeaturesClient.addFeature(feature, saveFeatureCallback);
+        validSubmit(false)
         
     }
 
@@ -212,6 +213,9 @@ var FeaturesGrid = function () {
     // edit a feature
     var editFeature = function (feature) {
         feature.displayMode(displayMode.edit)
+        var dateControl = $('input[type="date"]');
+        var targetDate = feature.data.target_date();
+        dateControl.value = targetDate;
     }
 
     // show client name by client id
@@ -291,9 +295,7 @@ var FeaturesGrid = function () {
     var fetchFeaturesCallback = function (data) {
         features([]);
         data.forEach(function(item) {
-            var date = new Date(item.target_date)
-            var newDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() 
-            item.target_date = newDate;
+            adjustDateFormat(item)
             features.push(new featureModel(item, displayMode.view));
         });
         sortBy();
@@ -333,9 +335,15 @@ var FeaturesGrid = function () {
         e.enableProductsTable(true)
     }
     
+    var enableDisableSubmit = function (valid) {
+        validSubmit(valid)
+    }
+    
     var enableFeaturesTable = ko.observable(true)
     var enableClientsTable = ko.observable(false)
     var enableProductsTable = ko.observable(false)
+    var validSubmit = ko.observable()
+
 
     var filtterFeaturesByClient = function(e){
         console.log(e.addFeatureModel.client_id, e.addFeatureModel.product_area_id)
@@ -372,9 +380,7 @@ var FeaturesGrid = function () {
     var filtterFeaturesByClientCallback = function(data) {
         features([]);
         data.forEach(function(item) {
-            var date = new Date(item.target_date)
-            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
-            item.target_date = newDate;
+            adjustDateFormat(item);
             features.push(new featureModel(item, displayMode.view));
         });
         sortBy() 
@@ -383,9 +389,7 @@ var FeaturesGrid = function () {
     var filtterFeaturesByProductCallback = function(data) {
         features([]);
         data.forEach(function(item) {
-            var date = new Date(item.target_date)
-            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
-            item.target_date = newDate;
+            adjustDateFormat(item);
             features.push(new featureModel(item, displayMode.view));
         });
         sortBy() 
@@ -394,23 +398,44 @@ var FeaturesGrid = function () {
     var filtterFeaturesByClientProductCallback = function(data) {
         features([]);
         data.forEach(function(item) {
-            var date = new Date(item.target_date)
-            var newDate = date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
-            item.target_date = newDate;
+            adjustDateFormat(item);
             features.push(new featureModel(item, displayMode.view));
         });
         sortBy() 
     }
 
+    var adjustDateFormat = function (item) {
+        var date = new Date(item.target_date);
+        var day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate();
+        var month = date.getMonth() <= 8 ? "0"+(date.getMonth() + 1) : date.getMonth() + 1;
+        var newDate = date.getFullYear() + '-' + month + '-' + day; 
+        item.target_date = newDate;
+    }
+
+    var formValidation = function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('change', function(event) {
+            if (form.checkValidity() === false) {
+              FeaturesGrid.enableDisableSubmit(false)
+            } else {
+              FeaturesGrid.enableDisableSubmit(true)
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+    }
+    
     var init = function () {
         fetchFeatures();
         fetchClients();
         fetchProducts();
-        
+        formValidation()
         ko.applyBindings(FeaturesGrid); 
     };
 
     $(init);
+   
 
     return {
         features,
@@ -446,7 +471,9 @@ var FeaturesGrid = function () {
         filtterFeaturesByClient,
         filtterFeaturesByProduct,
         showClientNametById,
-        showProductNameById
+        showProductNameById,
+        validSubmit,
+        enableDisableSubmit
 
     };
 }();
