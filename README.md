@@ -7,7 +7,7 @@ A "feature request" is a request for a new feature that will be added onto an ex
 
 ## Tech Stack:
 - **OS**: Ubuntu 18.04.
-- **Server Side Scripting**: Python  3.7.
+- **Server Side Scripting**: Python  3.6.
 - **Server Framework**: Flask.
 - **ORM**: Sql-Alchemy.
 - **JavaScript**: KnockoutJS &  Jquery.
@@ -64,7 +64,7 @@ sudo git clone https://github.com/Atheer83/Implementation
 #### 8- Install Dependecies
 ```
 cd Implementation
-pip3 install -r requirments.txt
+pip3 install -r requirements.txt
 ```
 #### 9- Prevent "psycopg2" issue
 ```
@@ -91,16 +91,53 @@ psql -d requests
 - Create the user and grant access to database:
 ```
 CREATE ROLE britecore WITH LOGIN PASSWORD 'britecore';
-```
-
-- GRANT ALL PRIVILEGES ON DATABASE requests TO britecore;
-```
+GRANT ALL PRIVILEGES ON DATABASE requests TO britecore;
 ALTER USER britecore CREATEDB;
+\q
+logout
 ```
 #### 11- Run The Web App
 ```
 gunicorn3 run:app
 ```
 ## Running Locally
+#### 1- Install Python 
+```
+sudo apt update
+sudo apt install python3
+```
+#### 2- Install PIP
+```
+sudo apt install python3-pip
+```
+#### 3- Clone The Project
+```
+sudo git clone https://github.com/Atheer83/Implementation
+```
+#### 4- Install Virtual Environments
+```
+cd Implementation
+sudo apt install python3-venv
+```
+#### 5- Create an Environment
+```
+python3 -m venv feature_request_venv
+```
+#### 6- Activate The Environment
+```
+. feature_request_venv/bin/activate
+```
+#### 7- Install Dependecies
+```
+pip3 install -r requirements.txt
+```
+#### 8- Repeat Steps
+- Repeat steps 9 & 10 from [Deployment](#Deployment)
+#### 9- Run The Wep App
+```
+python3 run.py
+```
+now the wep app is running on http://localhost:5000
+
 
 ## Running Tests
