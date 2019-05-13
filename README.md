@@ -3,7 +3,7 @@
 A "feature request" is a request for a new feature that will be added onto an existing piece of software. 
 
 ### Check the Web App:
-[Live Demo](ec2-18-191-67-216.us-east-2.compute.amazonaws.com).
+[Live Demo](http://ec2-18-191-67-216.us-east-2.compute.amazonaws.com/).
 
 ## Tech Stack:
 - **OS**: Ubuntu 18.04.
