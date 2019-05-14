@@ -13,12 +13,11 @@ def get_clients():
      result = clients_schema.dump(all_clients)
      return jsonify(result.data)
 
+# Add New Client
 @clients.route('/clients',methods=['POST'])
 def add_client():
      name=request.json['name']
-
      client = Clients(name)
-
      db.session.add(client)
      db.session.commit()
      return client_schema.jsonify(client)
@@ -29,20 +28,15 @@ def delete_client(id):
      client = Clients.query.get(id)
      db.session.delete(client)
      db.session.commit()
-
      return client_schema.jsonify(client)
 
 # Update a client
 @clients.route('/clients/<id>', methods=['PUT'])
 def update_client(id):
   client = Clients.query.get(id)
-
   name = request.json['name']
-
   client.name = name
-
   db.session.commit()
-
   return client_schema.jsonify(client)
 
      

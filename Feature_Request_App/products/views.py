@@ -13,12 +13,11 @@ def get_products():
      result = products_schema.dump(all_products)
      return jsonify(result.data)
 
+# Add NewProduct
 @products.route('/products',methods=['POST'])
 def add_product():
      name=request.json['name']
-
      product = Products(name)
-
      db.session.add(product)
      db.session.commit()
      return product_schema.jsonify(product)
@@ -29,20 +28,15 @@ def delete_product(id):
      product = Products.query.get(id)
      db.session.delete(product)
      db.session.commit()
-
      return product_schema.jsonify(product)
 
 # Update a product
 @products.route('/products/<id>', methods=['PUT'])
 def update_product(id):
   product = Products.query.get(id)
-
   name = request.json['name']
-
   product.name = name
-
   db.session.commit()
-
   return product_schema.jsonify(product)
 
      

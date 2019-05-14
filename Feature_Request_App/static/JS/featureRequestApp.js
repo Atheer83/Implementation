@@ -6,6 +6,9 @@ var FeaturesGrid = function () {
     // list of all products area 
     var productsList = ko.observableArray();
 
+    // list of all features
+    var features = ko.observableArray()
+
     // model for adding feature
     var addFeatureModel = function () {
         this.id = ko.observable(item.id);
@@ -30,7 +33,7 @@ var FeaturesGrid = function () {
         this.productName = ko.observable(item.name);
     } 
 
-    // model for feature
+    // model for adding feature to features array
     featureModel = function (item, itemMode) {
         this.data = {};
         this.data.id = ko.observable(item.id);
@@ -43,7 +46,7 @@ var FeaturesGrid = function () {
         this.displayMode = ko.observable(itemMode);
     };
 
-    // model for client
+    // model for adding client to clients array
     clientModel = function (item, itemMode) {
         this.data = {};
         this.data.id = ko.observable(item.id);
@@ -51,7 +54,7 @@ var FeaturesGrid = function () {
         this.displayMode = ko.observable(itemMode);
     };
 
-    // model for product
+    // model for adding product to products array
     productModel = function (item, itemMode) {
         this.data = {};
         this.data.id = ko.observable(item.id);
@@ -65,39 +68,31 @@ var FeaturesGrid = function () {
         edit: "EDIT"
     }
 
-    // list of features
-    var features = ko.observableArray()
-
+   
+    // To sort features by priority
     var sortBy = function() {
         features.sort(function(left, right){
             return left.data.client_priority() == right.data.client_priority() ? 
             0 : left.data.client_priority() < right.data.client_priority() ? -1 : 1
         });
     }
-    // list of clients
+
+    // list of clients to binding them to client dropdownlist
     var clients = ko.observableArray();
-
-    // list of products
-    var products = ko.observableArray();
-
-    // show modal to add feature
-    var addFeature = function (){ 
-            getAllClients();
-            getAllProducts();
-        };
-
     var getAllClients = function () {
-       var clientsObj = {};
-       var listOfClients = clients();
-       clientsList([])
-       for (var i = 0; i < listOfClients.length; i++) {
-            clientsObj = {};
-            clientsObj['name'] = listOfClients[i].data.name();
-            clientsObj['id'] = listOfClients[i].data.id();
-            clientsList.push(clientsObj)
-            }
-        };
+        var clientsObj = {};
+        var listOfClients = clients();
+        clientsList([])
+        for (var i = 0; i < listOfClients.length; i++) {
+             clientsObj = {};
+             clientsObj['name'] = listOfClients[i].data.name();
+             clientsObj['id'] = listOfClients[i].data.id();
+             clientsList.push(clientsObj)
+        }
+    };
 
+    // list of product areas to binding them to product area dropdownlist
+    var products = ko.observableArray();
     var getAllProducts = function () {
         var productsObj = {};
         var listOfProducts = products();
@@ -107,18 +102,24 @@ var FeaturesGrid = function () {
                 productsObj['name'] = listOfProducts[i].data.name();
                 productsObj['id'] = listOfProducts[i].data.id();
                 productsList.push(productsObj)
-            }
-        };
+        }
+    };
 
-    // add a blank client to the clients array
+    // show popup form to add feature
+    var addFeature = function (){ 
+            getAllClients();
+            getAllProducts();
+    };
+
+    // show popup form to add client
     var addClient = function (){
     };
 
-     // add a blank product to the products array
+     // show popup form to add product
      var addProduct = function (){
     };
 
-    // add rquest to the feature service
+    // call method to send post rquest from feature service and run callback on success
     var saveFeature = function () {
         document.getElementById("addFeatureForm").reset();
         var feature = {
@@ -129,12 +130,17 @@ var FeaturesGrid = function () {
             'client_priority':addFeatureModel.client_priority,
             'target_date':addFeatureModel.target_date,
         }
-        FeaturesClient.addFeature(feature, saveFeatureCallback);
+        FeaturesService.addFeature(feature, saveFeatureCallback);
         validSubmit(false)
-        
     }
+    var saveFeatureCallback = function () {
+        fetchFeatures() 
+        getAllClients();
+        getAllProducts(); 
+        sortBy() 
+    };
 
-    // add rquest to the client service
+    // call method to send post rquest from client service and run callback on success
     var saveClient = function () {
         document.getElementById("addClientForm").reset();
         var client = {
@@ -142,8 +148,13 @@ var FeaturesGrid = function () {
         }
         ClientService.addClient(client, saveClientCallback);
     }
+    var saveClientCallback = function () {
+        addClientModel.name = undefined;
+        fetchClients();
+        getAllClients()
+    };
 
-    // add rquest to the product service
+    // call method to send post rquest from product service and run callback on success
     var saveProduct = function (product) {
         document.getElementById("addProductForm").reset();
         var product = {
@@ -151,66 +162,36 @@ var FeaturesGrid = function () {
         }
         ProductService.addProduct(product, saveProductCallback);
     }
-
-    // callback function for saving feature
-    var saveFeatureCallback = function (e) {
-        addFeatureModel.title = undefined;
-        addFeatureModel.description = undefined;
-        addFeatureModel.client_id = undefined;
-        addFeatureModel.product_area_id = undefined;
-        addFeatureModel.client_priority = undefined;
-        addFeatureModel.target_date = undefined;
-        fetchFeatures() 
-        getAllClients();
-        getAllProducts(); 
-        sortBy() 
-    };
-
-    // callback function for saving client
-    var saveClientCallback = function (client) {
-        addClientModel.name = undefined;
-        fetchClients();
-        getAllClients()
-    };
-
-     // callback function for saving product
-     var saveProductCallback = function (product) {
+    var saveProductCallback = function () {
         addProductModel.name = undefined;
         fetchProducts();
         getAllProducts();
     };
 
-    // delete rquest to the feature service
+    // call method to send delete rquest from feature service and run callback on success
     var deleteFeature = function (feature) {
-        FeaturesClient.deleteFeature(feature, deleteFeatureCallback);
+        FeaturesService.deleteFeature(feature, deleteFeatureCallback);
     }
-
-    // delete rquest to the client service
-    var deleteClient = function (client) {
-        ClientService.deleteClient(client, deleteClientCallback);
-    }
-
-    // delete rquest to the product service
-    var deleteProduct = function (product) {
-        ProductService.deleteProduct(product, deleteProductCallback);
-    }
-
-    // callback function for deleting feature
     var deleteFeatureCallback = function (feature) {
         features.remove(feature);
     };
 
-    // callback function for deleting client
+    // call method to send delete rquest from client service and run callback on success
+    var deleteClient = function (client) {
+        ClientService.deleteClient(client, deleteClientCallback);
+    }
     var deleteClientCallback = function (client) {
         clients.remove(client);
     };
 
-     // callback function for deleting product
-     var deleteProductCallback = function (product) {
+    var deleteProduct = function (product) {
+        ProductService.deleteProduct(product, deleteProductCallback);
+    }
+    var deleteProductCallback = function (product) {
         products.remove(product);
     };
-
-    // edit a feature
+    
+    // bind feature data for editting
     var editFeature = function (feature) {
         feature.displayMode(displayMode.edit)
         var dateControl = $('input[type="date"]');
@@ -218,90 +199,74 @@ var FeaturesGrid = function () {
         dateControl.value = targetDate;
     }
 
-    // show client name by client id
+    // bind client data for editting
+    var editClient = function (client) {
+        client.displayMode(displayMode.edit)
+    }
+
+    // bind product data for editting
+    var editProduct = function (product) {
+        product.displayMode(displayMode.edit)
+    }
+
+    // show client name by switching client id to client name
     var showClientNametById = function(clientId){
         if(clientsList()[clientId - 1]) {
             return clientsList()[clientId - 1].name
         }
     }
 
-     // show product name by product id
-     var showProductNameById = function(productId){
+    // show product name by switching product id to product name
+    var showProductNameById = function(productId){
          if(productsList()[productId - 1] ) {
             return productsList()[productId - 1].name
          }
     }
-    // edit a client
-    var editClient = function (client) {
-        client.displayMode(displayMode.edit)
-    }
+    
 
-     // edit a product
-     var editProduct = function (product) {
-        product.displayMode(displayMode.edit)
-    }
-
-    // update rquest to the featur service
+    // call method to send put rquest from feature service and run callback on success
     var updateFeature = function (feature) {
-        FeaturesClient.updateFeature(feature, updateFeatureCallback);
+        FeaturesService.updateFeature(feature, updateFeatureCallback);
     }
-
-      // update rquest to the client service
-      var updateClient = function (client) {
-        ClientService.updateClient(client, updateClientCallback);
-    }
-
-     // update rquest to the product service
-     var updateProduct = function (product) {
-        ProductService.updateProduct(product, updateProductCallback);
-    }
-
-    // Rebuild Database
-    var rebuildDatabase = function() {
-        FeaturesClient.rebuildDatabase(rebuildDatabaseCallback)
-    }
- 
-    var rebuildDatabaseCallback = function(result) {
-        fetchFeatures()
-        fetchClients()
-        fetchProducts()
-        sortBy() 
-    }
-    // callback function for updating feature
     var updateFeatureCallback = function (feature) {
         feature.displayMode(displayMode.view)
         fetchFeatures()
         sortBy() 
     }
 
-    // callback function for updating client
+    // call method to send put rquest from client service and run callback on success
+    var updateClient = function (client) {
+        ClientService.updateClient(client, updateClientCallback);
+    }
     var updateClientCallback = function (client) {
         client.displayMode(displayMode.view)
         fetchClients()
     }
 
-     // callback function for updating product
-     var updateProductCallback = function (product) {
+    // call method to send put rquest from product service and run callback on success
+    var updateProduct = function (product) {
+        ProductService.updateProduct(product, updateProductCallback);
+    }
+    var updateProductCallback = function (product) {
         product.displayMode(displayMode.view)
         fetchProducts()
     }
 
-    // get all features
+    // Rebuild Database
+    var rebuildDatabase = function() {
+        FeaturesService.rebuildDatabase(rebuildDatabaseCallback)
+    }
+    var rebuildDatabaseCallback = function() {
+        fetchFeatures()
+        fetchClients()
+        fetchProducts()
+        sortBy() 
+    }
+   
+    // call method to send get rquest from feature service and run callback on success    
     var fetchFeatures = function () {
-        FeaturesClient.getFeatures(fetchFeaturesCallback)
+        FeaturesService.getFeatures(fetchFeaturesCallback)
     }
-
-    // get all clients
-    var fetchClients = function () {
-        ClientService.getClients(fetchClientsCallback)
-    }
-
-     // get all products
-     var fetchProducts = function () {
-        ProductService.getProducts(fetchProductsCallback);
-    }
-
-    // callback function for fetching feature
     var fetchFeaturesCallback = function (data) {
         features([]);
         data.forEach(function(item) {
@@ -311,7 +276,10 @@ var FeaturesGrid = function () {
         sortBy();
     };
 
-    // callback function for fetching clients
+    // call method to send get rquest from client service and run callback on success    
+    var fetchClients = function () {
+        ClientService.getClients(fetchClientsCallback)
+    }
     var fetchClientsCallback = function (data) {
         clients([]);
         data.forEach(function(item) {
@@ -320,7 +288,10 @@ var FeaturesGrid = function () {
         getAllClients()
     };
 
-    // callback function for fetching products
+    // call method to send get rquest from product service and run callback on success    
+    var fetchProducts = function () {
+        ProductService.getProducts(fetchProductsCallback);
+    }
     var fetchProductsCallback = function (data) {
         products([]);
         data.forEach(function(item) {
@@ -328,7 +299,8 @@ var FeaturesGrid = function () {
         });
         getAllProducts();
     };
-
+   
+    // show tabels functions that run on click for buttons on sections side
     var showFeaturesTable = function(e) {
         e.enableFeaturesTable(true)
         e.enableClientsTable(false)
@@ -345,83 +317,12 @@ var FeaturesGrid = function () {
         e.enableProductsTable(true)
     }
     
+    // enable save button when add feature if all info putted
     var enableDisableSubmit = function (valid) {
         validSubmit(valid)
     }
-    
-    var enableFeaturesTable = ko.observable(true)
-    var enableClientsTable = ko.observable(false)
-    var enableProductsTable = ko.observable(false)
-    var validSubmit = ko.observable()
 
-
-    var filtterFeaturesByClient = function(e){
-        console.log(e.addFeatureModel.client_id, e.addFeatureModel.product_area_id)
-        var clientId = e.addFeatureModel.client_id;
-        var productId = e.addFeatureModel.product_area_id;
-        if(clientId !== undefined && productId === undefined) {
-            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
-        } else if (clientId !== undefined && productId !== undefined) {
-            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
-        } else if (clientId === undefined && productId !== undefined) {
-            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
-        } else {
-            fetchFeatures(); 
-            sortBy() 
-        }
-    }
-
-    var filtterFeaturesByProduct = function(e){
-        console.log(e.addFeatureModel.client_id, e.addFeatureModel.product_area_id)
-        var clientId = e.addFeatureModel.client_id;
-        var productId = e.addFeatureModel.product_area_id;
-        if(productId !== undefined && clientId === undefined) {
-            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
-        } else if (productId !== undefined && clientId !== undefined) {
-            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
-        } else if (productId === undefined && clientId !== undefined) {
-            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
-        } else {
-            fetchFeatures(); 
-            sortBy() 
-        }
-    }
-
-    var filtterFeaturesByClientCallback = function(data) {
-        features([]);
-        data.forEach(function(item) {
-            adjustDateFormat(item);
-            features.push(new featureModel(item, displayMode.view));
-        });
-        sortBy() 
-    }
-
-    var filtterFeaturesByProductCallback = function(data) {
-        features([]);
-        data.forEach(function(item) {
-            adjustDateFormat(item);
-            features.push(new featureModel(item, displayMode.view));
-        });
-        sortBy() 
-    }
-
-    var filtterFeaturesByClientProductCallback = function(data) {
-        features([]);
-        data.forEach(function(item) {
-            adjustDateFormat(item);
-            features.push(new featureModel(item, displayMode.view));
-        });
-        sortBy() 
-    }
-
-    var adjustDateFormat = function (item) {
-        var date = new Date(item.target_date);
-        var day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate();
-        var month = date.getMonth() <= 8 ? "0"+(date.getMonth() + 1) : date.getMonth() + 1;
-        var newDate = date.getFullYear() + '-' + month + '-' + day; 
-        item.target_date = newDate;
-    }
-
+    // check form validation on each input or change to add feature form
     var formValidation = function() {
         var forms = document.getElementsByClassName('needs-validation');
         var validation = Array.prototype.filter.call(forms, function(form) {
@@ -436,15 +337,90 @@ var FeaturesGrid = function () {
         });
     }
     
+    // show features table when web app run
+    var enableFeaturesTable = ko.observable(true)
+    var enableClientsTable = ko.observable(false)
+    var enableProductsTable = ko.observable(false)
+    var validSubmit = ko.observable()
+
+    // call method to send get rquest to get all features for a client 
+    var filtterFeaturesByClient = function(e){
+        var clientId = e.addFeatureModel.client_id;
+        var productId = e.addFeatureModel.product_area_id;
+        if(clientId !== undefined && productId === undefined) {
+            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
+        } else if (clientId !== undefined && productId !== undefined) {
+            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
+        } else if (clientId === undefined && productId !== undefined) {
+            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
+        } else {
+            fetchFeatures(); 
+            sortBy() 
+        }
+    }
+
+    // call method to send get rquest to get all features for a product 
+    var filtterFeaturesByProduct = function(e){
+        var clientId = e.addFeatureModel.client_id;
+        var productId = e.addFeatureModel.product_area_id;
+        if(productId !== undefined && clientId === undefined) {
+            ProductService.getProductFeatures(productId, filtterFeaturesByProductCallback)
+        } else if (productId !== undefined && clientId !== undefined) {
+            ClientService.getClientProductFeatures(clientId, productId, filtterFeaturesByClientProductCallback)
+        } else if (productId === undefined && clientId !== undefined) {
+            ClientService.getClientFeatures(clientId, filtterFeaturesByClientCallback)
+        } else {
+            fetchFeatures(); 
+            sortBy() 
+        }
+    }
+
+    // callback methods for each filtter get requst on success
+    var filtterFeaturesByClientCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            adjustDateFormat(item);
+            features.push(new featureModel(item, displayMode.view));
+        });
+        sortBy() 
+    }
+    var filtterFeaturesByProductCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            adjustDateFormat(item);
+            features.push(new featureModel(item, displayMode.view));
+        });
+        sortBy() 
+    }
+    var filtterFeaturesByClientProductCallback = function(data) {
+        features([]);
+        data.forEach(function(item) {
+            adjustDateFormat(item);
+            features.push(new featureModel(item, displayMode.view));
+        });
+        sortBy() 
+    }
+
+    // to bind date on edit feature
+    var adjustDateFormat = function (item) {
+        var date = new Date(item.target_date);
+        var day = date.getDate() <= 9 ? "0" + date.getDate() : date.getDate();
+        var month = date.getMonth() <= 8 ? "0"+(date.getMonth() + 1) : date.getMonth() + 1;
+        var newDate = date.getFullYear() + '-' + month + '-' + day; 
+        item.target_date = newDate;
+    }
+
+   
+    // select methods that will run when page finish load 
     var init = function () {
         fetchFeatures();
         fetchClients();
         fetchProducts();
         formValidation();
-        rebuildDatabase();
         ko.applyBindings(FeaturesGrid); 
     };
 
+    // run init function when page finish load
     $(init);
    
 
@@ -485,7 +461,6 @@ var FeaturesGrid = function () {
         showProductNameById,
         validSubmit,
         enableDisableSubmit,
-        rebuildDatabase
-
+        rebuildDatabase,
     };
 }();

@@ -1,25 +1,22 @@
-var FeaturesClient = function () {
+var FeaturesService = function () {
 
-    // Add feature
+    // Send POST Request for Adding a feature
     var addFeature = function (feature, callback) {
         var plainFeature = ko.toJS (feature);
-        console.log("Saving feature [" + JSON.stringify(plainFeature) + "] ");
         $.ajax({
             url: "/features",
             type: "POST",
             data: JSON.stringify(plainFeature),
             contentType: "application/json",
             success: function(result) {
-                console.log(JSON.stringify(result))
                 callback ();
             }
         });
     };
 
-    // Update feature
+    // Send PUT Request for Updatting a feature
     var updateFeature = function (feature, callback) {
         var plainFeature = ko.toJS (feature.data);
-        console.log("Updating feature [" + JSON.stringify(plainFeature) + "] ");
         $.ajax({
             url: "/features/" + feature.data.id(),
             type: "PUT",
@@ -31,30 +28,29 @@ var FeaturesClient = function () {
         });
     };
 
-    // Delete feature
+    // Send DELETE Request for Delete a feature
     var deleteFeature = function (feature, callback) {
         $.ajax({
             url: "/features/" + feature.data.id(),
             type: "DELETE",
             success: function(result) {
-                console.log(result)
                 callback (feature);
             }
         });
     };
 
-    // Get All features
+    // Send GET Request for Get All features
     var getFeatures = function (callback) {
         $.ajax({
             url: "/features",
             type: "GET",
             success: function (result) {
-                console.log("Features", JSON.stringify(result));
                 callback (result);
             }
         });
     };
 
+    // Send GET Request for Rebuild Database
     var rebuildDatabase = function(callback) {
         $.ajax({
             url: "/rebuildDatabase",
@@ -66,10 +62,10 @@ var FeaturesClient = function () {
     }
 
     return {
-        addFeature: addFeature,
-        getFeatures: getFeatures,
-        deleteFeature: deleteFeature,
-        updateFeature: updateFeature,
+        addFeature,
+        getFeatures,
+        deleteFeature,
+        updateFeature,
         rebuildDatabase,
     };
 }();
