@@ -4,7 +4,17 @@ A "feature request" is a request for a new feature that will be added onto an ex
 
 ### Check the Web App:
 [Live Demo](http://ec2-18-191-67-216.us-east-2.compute.amazonaws.com/).
-
+## How The Web App Work
+>After running the web app by press this [Live Demo](http://ec2-18-191-67-216.us-east-2.compute.amazonaws.com/) or running it locally [Running Locally](#running-locally)
+#### Rebuild Database
+- By pressing button "Rebuild Database" on the top right, the seed data will add (3 Clients, 4 Product Areas) and you can press this button any time you need to reset database
+#### Adding New Feature Requsted
+- By adding new feature if priority exist in a feature to same client, all series features priority will change and reorderd
+#### Updating Feature
+- When change priority for a feature, if new priority exist in a feature to same client, all series features priority will change and reorderd
+- When change client for a feature, if priority for new client exist in a feature to same new client, all series features priority will change and reorderd
+#### Deleting Feature, Client and Product Area
+- You can delete any feature, client and product area, but can't delete client and product area if there is a feature assigned to them
 ## Tech Stack:
 - **OS**: Ubuntu 18.04.
 - **Server Side Scripting**: Python  3.6.
@@ -141,3 +151,8 @@ now the wep app is running on http://localhost:5000
 
 
 ## Running Tests
+#### 1- Do same steps from [Running Locally](#running-locally) except step 9
+#### 2- Run The Test
+```
+python3 test_app.py
+```
